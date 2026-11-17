@@ -1,0 +1,11 @@
+OPENTUBE CHANGE LOG
+VERSION: 3.0.6
+DATE: 2026-11-17
+STATUS: stable
+
+HIGHLIGHTS
+- OpenTube Rebrand: Initial independent release by Masthan Valli (@Masthan008)
+- Human-Crafted Brand Identity: Crimson red OpenTube logo, vector adaptive icons, and full Material 3 dynamic styling
+- Independent Updates: Direct GitHub releases integration (Masthan008/OpenTube) and new OpenTube Web landing page
+- Universal Compatibility: RSA 4096-bit production keystore with universal CPU architecture support
+- Privacy & Local Control: Zero tracking, no telemetry, on-device recommendations, and encrypted device sync

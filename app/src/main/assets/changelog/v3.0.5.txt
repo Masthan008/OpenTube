@@ -1,11 +1,11 @@
-FLOW CHANGE LOG
+OPENTUBE CHANGE LOG
 VERSION: 3.0.5
 DATE: 2026-11-16
 STATUS: stable
 
 HIGHLIGHTS
 - Profiles: up to five people can each have their own feed, history, subscriptions and settings in one app
-- Linked devices: keep your phones, tablets, TVs and Flow Desktop in sync over your Wi-Fi, your own Flow server or a WebDAV folder, end to end encrypted
+- Linked devices: keep your phones, tablets, TVs and OpenTube Desktop in sync over your Wi-Fi, your own OpenTube server or a WebDAV folder, end to end encrypted
 - Play on: move what you're watching or listening to onto another device, or control it from here
 - Android TV is redesigned on Material 3 Expressive, using the phone's own pages and players
 - Music crossfade, music casting, a customizable mini player and new player backgrounds
@@ -29,8 +29,8 @@ PROFILES
 - Settings can move into the profile button's menu
 
 LINKED DEVICES
-- Link phones, tablets, TVs and Flow Desktop into one group that stays in sync, end to end encrypted (#1075)
-- Keep the group on your own Flow sync server, in a WebDAV folder such as Nextcloud, or on your Wi-Fi network with no server at all
+- Link phones, tablets, TVs and OpenTube Desktop into one group that stays in sync, end to end encrypted (#1075)
+- Keep the group on your own OpenTube sync server, in a WebDAV folder such as Nextcloud, or on your Wi-Fi network with no server at all
 - Devices on the same Wi-Fi sync directly when they meet, and changes arrive within seconds while both are open
 - A TV or other device without a camera joins by showing a code a linked phone scans, or by typing the server address
 - Choose which profiles sync and what each device syncs, and turn off Sync automatically to sync only when you tap Sync now
@@ -55,7 +55,7 @@ ANDROID TV
 - Every card, tab, button and player control is reachable with the remote, and the Menu key or holding OK opens quick actions
 - Reorder tabs, playlists, groups, lyrics providers and the queue with Move up and Move down
 - A Now playing item sits in the rail while music plays, and going back from a video returns to the card you played
-- Open a channel from the video player, and links in channels and descriptions open inside Flow
+- Open a channel from the video player, and links in channels and descriptions open inside OpenTube
 - Seeking with the remote shows only the progress bar, and Up next sits on its own panel (#998)
 
 MUSIC PLAYER
@@ -122,7 +122,7 @@ COMMENTS
 - Comments keep your place until you open another video (#1560)
 
 HOME, SEARCH AND SUBSCRIPTIONS
-- Tap the Flow logo to scroll Home to the top, and new videos wait behind a New videos button instead of swapping the feed (#1172, #1447)
+- Tap the OpenTube logo to scroll Home to the top, and new videos wait behind a New videos button instead of swapping the feed (#1172, #1447)
 - The Home chip row and the New videos button can be turned off (#1913)
 - A Posts chip in Subscriptions, and GIF posts play (#1881)
 - Pin channels in Quick access, which also marks channels with new videos (#1776, #1755)
@@ -132,19 +132,19 @@ HOME, SEARCH AND SUBSCRIPTIONS
 - Channel pages show the country, join date and total views
 - Add a note or a group to a channel from any channel menu (#1998)
 - Post images open whole, and you can zoom and swipe between them (#1585)
-- Hit "not a bot"? Flow retries with a fresh session, or resets it in one tap (#1354)
+- Hit "not a bot"? OpenTube retries with a fresh session, or resets it in one tap (#1354)
 
 AI CONTENT
 - Hide or label videos from channels on the AiSList list, use your own list server, and report AI channels (#865)
 - Hide AI music leaves AI artists out of Music Home, radio and search (#865)
 
 DOWNLOADS AND STORAGE
-- A Downloads tab, Download with Flow in the share menu, and swipe to delete with Undo (#1415)
+- A Downloads tab, Download with OpenTube in the share menu, and swipe to delete with Undo (#1415)
 - A new download sheet with every quality, the codecs, subtitles and the audio track or dub to save (#1382, #1444)
 - Download all on a playlist lets you pick the videos (#2117)
 - Buffer ahead on disk saves the next minutes of a video so it keeps playing when the connection drops (#1696)
 - Set your own video and song cache sizes, from 50 MB to 50 GB (#1660)
-- After reinstalling, Flow finds your downloads again in the folder you choose (#1255)
+- After reinstalling, OpenTube finds your downloads again in the folder you choose (#1255)
 
 LIBRARY, PLAYLISTS AND BACKUPS
 - Choose what swiping a video in your playlists or a song in Up next does, with Undo (#1418)
@@ -169,7 +169,7 @@ SETTINGS AND APPEARANCE
 - Highlight new settings marks what an update added (#1676)
 - The classic spinning loading indicator, gradient loading placeholders and a Scrolling text switch (#1815)
 - Captions use your app font, and variable fonts show proper bold and regular weights (#1427, #1428)
-- Choose whether playback keeps going after you swipe Flow away (#1468)
+- Choose whether playback keeps going after you swipe OpenTube away (#1468)
 - DeArrow shows a frame from the video when there is no submitted thumbnail, and works on Shorts cards (#1633)
 
 FIXES: PLAYBACK
@@ -180,7 +180,7 @@ FIXES: PLAYBACK
 - Fix live streams with auto captions, and auto-translated captions on Android 14 and newer (#1369)
 - Fix Loop video and turning autoplay off (#1912)
 - Fix the system equalizer having no effect, and long custom buffers being ignored (#1373, #1438)
-- Fix headphones starting music after you closed Flow (#1450)
+- Fix headphones starting music after you closed OpenTube (#1450)
 - Fix paused music keeping the phone awake when the equalizer is off
 - Fix chapters: YouTube generated ones now show, and tapping one lands on the exact time (#2000, #2149)
 - Fix videos cast over DLNA playing without sound, and casting to a TV on your phone's hotspot (#2121)
@@ -196,12 +196,12 @@ FIXES: BROWSING
 - Fix premieres: dates in the description, the notification bell and premieres turning into normal videos (#1466, #1467)
 - Fix Google Takeout imports adding ads to your history, and crashing History on Android 10 and older (#1944, #1424)
 - Fix Metrolist playlist imports missing artist names (#1619)
-- Fix Open in YouTube when Flow handles YouTube links (#1420)
+- Fix Open in YouTube when OpenTube handles YouTube links (#1420)
 - Fix recommendations reading Chinese and Japanese titles and descriptions (#1341, #1395)
 
 FIXES: APP
 - Fix crashes on first launch, in Private Space, on the music home, in Library and when leaving a channel (#1355, #1357, #1386, #1439, #1338)
-- Fix status bar icons over the player and lyrics in light theme, and unreadable text with the phone dark and Flow light (#1375, #1836, #1517)
+- Fix status bar icons over the player and lyrics in light theme, and unreadable text with the phone dark and OpenTube light (#1375, #1836, #1517)
 - Fix the app flipping upside down in fullscreen, and keeping the landscape layout after rotating back (#1426, #1867)
 - Fix vertical videos covering the description on shorter phones (#1383)
 - Fix brightness and volume swipe haptics, and taps that had stopped vibrating (#1431, #1866)
