@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">Pretraži pretplate…</string>
     <string name="top_bar_subscriptions_title">Pretplate</string>
     <string name="view_all_button_label">Svi</string>
@@ -165,7 +165,7 @@
     <string name="new_update_available">Novo ažuriranje dostupno</string>
     <string name="update_available_template">%1$s je sada dostupno</string>
     <string name="release_notes">Bilješke o izdanju</string>
-    <string name="update_flow">Ažuriraj Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Možda kasnije</string>
     <string name="nav_home">Početna</string>
     <string name="nav_shorts">Shorts</string>
@@ -199,7 +199,7 @@
     <string name="chapters">Poglavlja</string>
     <string name="artist">Izvođač</string>
     <string name="playlist">Lista za reprodukciju</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">Vaš personalizirani feed</string>
     <string name="import_newpipe_backup">Uvezi sigurnosnu kopiju iz NewPipe-a</string>
@@ -347,7 +347,7 @@
     <string name="settings_item_export_data_subtitle">Napravite sigurnosnu kopiju svojih podataka</string>
     <string name="settings_item_import_data">Uvoz podataka</string>
     <string name="settings_item_import_data_subtitle">Obnovite iz sigurnosne kopije ili uvezite iz drugih aplikacija</string>
-    <string name="settings_item_about_flow">O Flow-u</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Verzija, Licenca, Doprinosioci</string>
     <string name="settings_item_support">Podrška i donacije</string>
     <string name="settings_item_support_subtitle">Podržite razvoj Flow-a</string>
@@ -1864,9 +1864,9 @@
     <string name="donation_prompt_later">Možda kasnije</string>
     <string name="donation_prompt_never">Ne prikazuj ponovo</string>
     <string name="about_creator">Kreator</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">Website</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="github_subtitle">Izvorni kod i problemi</string>

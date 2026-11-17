@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">सब्सक्रिप्शनस में से खोजें..।</string>
     <string name="top_bar_subscriptions_title">सदस्यताएँ</string>
     <string name="view_all_button_label">सभी</string>
@@ -164,7 +164,7 @@
     <string name="new_update_available">नया अपडेट उपलब्ध</string>
     <string name="update_available_template">%1$s अब उपलब्ध है</string>
     <string name="release_notes">रिलीज़ नोट्स</string>
-    <string name="update_flow">Flow अपडेट करें</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">बाद में शायद</string>
     <string name="nav_home">होम</string>
     <string name="nav_shorts">Shorts</string>
@@ -198,7 +198,7 @@
     <string name="chapters">अध्याय</string>
     <string name="artist">कलाकार</string>
     <string name="playlist">प्लेलिस्ट</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">आपकी व्यक्तिगत फ़ीड</string>
     <string name="import_newpipe_backup">NewPipe बैकअप आयात करें</string>
@@ -331,7 +331,7 @@
     <string name="settings_item_export_data_subtitle">अपने डेटा का बैकअप लें</string>
     <string name="settings_item_import_data">डेटा आयात करें</string>
     <string name="settings_item_import_data_subtitle">बैकअप से पुनर्स्थापित करें या अन्य ऐप्स से आयात करें</string>
-    <string name="settings_item_about_flow">Flow के बारे में</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">संस्करण, लाइसेंस, योगदानकर्ता</string>
     <string name="settings_item_support">सहायता और दान</string>
     <string name="settings_item_support_subtitle">Flow के विकास में सहायता करें</string>
@@ -2135,7 +2135,7 @@
     <string name="donation_prompt_support">विकास का समर्थन करें</string>
     <string name="donation_prompt_later">शायद बाद में</string>
     <string name="donation_prompt_never">दोबारा मत दिखाना</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website_address">प्रवाह-tube.org</string>
     <string name="about_reddit">reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>

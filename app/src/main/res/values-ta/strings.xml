@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">சந்தாக்களைத் தேடு...</string>
     <string name="subscriptions_sort_label">சேனல்களை வரிசைப்படுத்தவும்</string>
     <string name="subscriptions_sort_default">இயல்புநிலை</string>
@@ -351,7 +351,7 @@
     <string name="new_update_available">புதிய புதுப்பிப்பு கிடைக்கிறது</string>
     <string name="update_available_template">%1$s இப்போது கிடைக்கிறது</string>
     <string name="release_notes">வெளியீட்டு குறிப்புகள்</string>
-    <string name="update_flow">Flowஐப் புதுப்பிக்கவும்</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">பின்னர் இருக்கலாம்</string>
     <string name="nav_home">முகப்பு</string>
     <string name="nav_shorts">Shorts</string>
@@ -413,7 +413,7 @@
     <string name="channel_links">இணைப்புகள்</string>
     <string name="artist">கலைஞர்</string>
     <string name="playlist">பிளேலிஸ்ட்</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">உங்கள் தனிப்பயனாக்கப்பட்ட ஊட்டம்</string>
     <plurals name="videos_curated_template">
@@ -768,7 +768,7 @@
     <string name="settings_item_export_data_subtitle">உங்கள் தரவை காப்புப் பிரதி எடுக்கவும்</string>
     <string name="settings_item_import_data">தரவை இறக்குமதி செய்யவும்</string>
     <string name="settings_item_import_data_subtitle">காப்புப்பிரதியிலிருந்து மீட்டமைக்கவும் அல்லது பிற பயன்பாடுகளிலிருந்து இறக்குமதி செய்யவும்</string>
-    <string name="settings_item_about_flow">சுமார் Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">பதிப்பு, உரிமம், பங்களிப்பாளர்கள்</string>
     <string name="settings_item_support">ஆதரவு மற்றும் நன்கொடைகள்</string>
     <string name="settings_item_support_subtitle">Flow இன் வளர்ச்சியை ஆதரிக்க உதவுங்கள்</string>
@@ -1809,9 +1809,9 @@
     <string name="donation_prompt_later">பின்னர் இருக்கலாம்</string>
     <string name="donation_prompt_never">மீண்டும் காட்டாதே</string>
     <string name="about_creator">படைப்பாளி</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">இணையதளம்</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">ரெடிட்</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="github_subtitle">மூல குறியீடு &amp; சிக்கல்கள்</string>

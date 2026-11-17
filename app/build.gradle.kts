@@ -56,7 +56,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "io.github.aedev.flow"
+        applicationId = "io.github.masthan008.opentube"
         minSdk = 26
         targetSdk = 36
         versionCode = 20
@@ -101,7 +101,7 @@ android {
             dimension = "version"
             isDefault = true
             buildConfigField("Boolean", "UPDATER_ENABLED", "true")
-            buildConfigField("String", "DISCORD_APPLICATION_ID", "\"1526515771021328514\"")
+            buildConfigField("String", "DISCORD_APPLICATION_ID", "\"\"")
         }
         create("foss") {
             dimension = "version"

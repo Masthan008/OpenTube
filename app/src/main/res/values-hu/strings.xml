@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">Feliratkozások keresése...</string>
     <string name="subscriptions_sort_label">Csatornák rendezése</string>
     <string name="subscriptions_sort_default">Alapértelmezett</string>
@@ -351,7 +351,7 @@
     <string name="new_update_available">Új frissítés érhető el</string>
     <string name="update_available_template">Az %1$s már elérhető</string>
     <string name="release_notes">KIADÁSI MEGJEGYZÉSEK</string>
-    <string name="update_flow">Flow frissítés</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Talán később</string>
     <string name="nav_home">Kezdőlap</string>
     <string name="nav_shorts">Shorts</string>
@@ -413,7 +413,7 @@
     <string name="channel_links">Linkek</string>
     <string name="artist">Művész</string>
     <string name="playlist">Lejátszási lista elemre</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">Az Ön személyre szabott hírcsatornája</string>
     <plurals name="videos_curated_template">
@@ -768,7 +768,7 @@
     <string name="settings_item_export_data_subtitle">Készítsen biztonsági másolatot adatairól</string>
     <string name="settings_item_import_data">Adatok importálása</string>
     <string name="settings_item_import_data_subtitle">Visszaállítás biztonsági másolatból vagy importálás más alkalmazásokból</string>
-    <string name="settings_item_about_flow">Az Flow-ről</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Verzió, licenc, közreműködők</string>
     <string name="settings_item_support">Támogatás és adományok</string>
     <string name="settings_item_support_subtitle">Segítsen az Flow fejlesztésében</string>
@@ -1809,9 +1809,9 @@
     <string name="donation_prompt_later">Talán később</string>
     <string name="donation_prompt_never">Ne mutasd újra</string>
     <string name="about_creator">Teremtő</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">Weboldal</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="github_subtitle">Forráskód és problémák</string>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108">
+  <defs>
+    <linearGradient id="otGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF0033" />
+      <stop offset="100%" stop-color="#FF3355" />
+    </linearGradient>
+  </defs>
+  <!-- OpenTube "O" Ring -->
+  <path fill="url(#otGrad)" fill-rule="evenodd" d="M 54,18 A 36,36 0 1,0 54,90 A 36,36 0 1,0 54,18 Z M 54,26.5 A 27.5,27.5 0 1,1 54,81.5 A 27.5,27.5 0 1,1 54,26.5 Z" />
+  <!-- Play Triangle -->
+  <path fill="#FFFFFF" d="M 49,41 L 66.5,52.2 C 67.8,53.0 67.8,55.0 66.5,55.8 L 49,67.0 C 47.6,67.9 46,66.9 46,65.2 L 46,42.8 C 46,41.1 47.6,40.1 49,41 Z" />
+</svg>

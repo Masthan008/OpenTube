@@ -78,7 +78,7 @@
     <string name="btn_close">Mdel</string>
     <string name="action_comments">Iwenniten</string>
     <string name="action_save">Sekles</string>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">Nadi Isugen...</string>
     <string name="subscriptions_sort_label">Ceggɛet tisɣenwalin</string>
     <string name="subscriptions_sort_default">Ur yelli ara deg umḍiq</string>
@@ -401,7 +401,7 @@
     <string name="new_update_available">Asenfar amaynut i yella</string>
     <string name="update_available_template">%1$s yella tura.</string>
     <string name="release_notes">Ṣebbṛet tizmilin</string>
-    <string name="update_flow">Asnulfu Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Ahat ticki.</string>
     <string name="nav_shorts">Shorts</string>
     <string name="nav_subs">Iɣeblan</string>
@@ -456,7 +456,7 @@
     <string name="channel_links">Issawalen</string>
     <string name="artist">Anaẓur</string>
     <string name="playlist">Umurar n wubrid</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="personalized_feed">Asečču-inek i d-yettwassnen.</string>
     <plurals name="videos_curated_template">
         <item quantity="one">%1$d avidyut i yesɛeddan kan ɣef lǧal-ik.</item>
@@ -794,7 +794,7 @@
     <string name="settings_item_export_data_subtitle">Awi-d isefka-inek.</string>
     <string name="settings_item_import_data">Amḍiq n yisefka</string>
     <string name="settings_item_import_data_subtitle">Rremt-d seg uɛrur neɣ seg yiswiyen nniḍen</string>
-    <string name="settings_item_about_flow">ɣef Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Tusmiḍt, turagt, ibeddlen</string>
     <string name="settings_item_support">Ɛiwen i yisefka</string>
     <string name="settings_item_support_subtitle">Ɛiwen n tallelt i usnulfu n Flow</string>

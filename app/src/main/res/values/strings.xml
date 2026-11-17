@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
-    <string name="app_launcher_name" translatable="false">Flow</string>
+    <string name="app_name">OpenTube</string>
+    <string name="app_launcher_name" translatable="false">OpenTube</string>
     <string name="subscriptions_search_placeholder">Search subscriptions ...</string>
     <string name="subscriptions_sort_label">Sort channels</string>
     <string name="subscriptions_sort_default">Default</string>
@@ -540,7 +540,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_available_template">%1$s is now available</string>
     <string name="release_notes">RELEASE NOTES</string>
-    <string name="update_flow">Update Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Maybe later</string>
     <!-- Navigation -->
     <string name="nav_home">Home</string>
@@ -615,7 +615,7 @@
     <string name="channel_links">Links</string>
     <string name="artist">Artist</string>
     <string name="playlist">Playlist</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">Your personalized feed</string>
     <plurals name="videos_curated_template">
@@ -993,7 +993,7 @@
     <string name="settings_item_export_data_subtitle">Backup your data</string>
     <string name="settings_item_import_data">Import Data</string>
     <string name="settings_item_import_data_subtitle">Restore from backup or import from other apps</string>
-    <string name="settings_item_about_flow">About Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Version, License, Contributors</string>
     <string name="settings_item_support">Support &amp; Donations</string>
     <string name="settings_item_support_subtitle">Help support the development of Flow</string>
@@ -2243,9 +2243,9 @@
     <string name="donation_prompt_never">Don\'t show again</string>
     <!-- About Screen -->
     <string name="about_creator">Creator</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">Website</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="github_subtitle">Source code &amp; Issues</string>
@@ -4729,7 +4729,7 @@
     <string name="settings_changelog_all_releases">All releases on GitHub</string>
     <string name="settings_changelog_expand">Show changes</string>
     <string name="settings_changelog_collapse">Hide changes</string>
-    <string name="settings_creator_role">Creator and developer of Flow</string>
+    <string name="settings_creator_role">Creator and maintainer of OpenTube</string>
     <string name="device_info_section_device">Device</string>
     <string name="device_info_section_system">System</string>
     <string name="device_info_section_display">Display</string>

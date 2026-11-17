@@ -7,7 +7,7 @@
     <string name="no_subscriptions_yet">Sem inscrições ainda</string>
     <string name="status_downloaded">Baixado</string>
     <string name="title_create_playlist">Criar Playlist</string>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="empty_subscriptions_body">Inscreva-se em canais para ver seus vídeos mais recentes aqui</string>
     <string name="home_refresh_feed">Atualizar o feed</string>
     <string name="retry">Tentar Novamente</string>
@@ -154,7 +154,7 @@
     <string name="new_update_available">Nova atualização disponível</string>
     <string name="update_available_template">%1$s já está disponível</string>
     <string name="release_notes">NOTAS DE LANÇAMENTO</string>
-    <string name="update_flow">Atualização do Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Talvez mais tarde</string>
     <string name="nav_home">Início</string>
     <string name="nav_music">Música</string>
@@ -341,7 +341,7 @@
     <string name="added_to_playlist_toast">Adicionado à playlist</string>
     <string name="close_player">Fechar reprodutor</string>
     <string name="playlist">Playlist</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="edit_group">Editar Grupo</string>
     <string name="delete_group">Deletar Grupo</string>
     <string name="group_name_label">Nome do grupo</string>
@@ -374,7 +374,7 @@
     <string name="settings_item_search_history">Pesquisa &amp; Histórico</string>
     <string name="settings_item_search_history_subtitle">Limpar histórico, gerenciar sugestões</string>
     <string name="settings_item_time_management">Gerenciamento de Tempo</string>
-    <string name="settings_item_about_flow">Sobre o Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Versão, Licença, Colaboradores</string>
     <string name="settings_item_support">Apoio &amp; Doações</string>
     <string name="settings_item_support_subtitle">Apoie o desenvolvimento do Flow</string>
@@ -1237,9 +1237,9 @@
     <string name="donation_prompt_later">Talvez mais tarde</string>
     <string name="donation_prompt_never">Não mostrar novamente</string>
     <string name="about_creator">Criador</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">Site</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="github_subtitle">Código-fonte &amp; problemas</string>

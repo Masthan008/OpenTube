@@ -32,6 +32,8 @@ local.properties
 *.keystore
 *.jks
 key.properties
+KEYSTORE_CREDENTIALS.md
+*credentials*.md
 pipepipe
 graphify-out/
 .claude/

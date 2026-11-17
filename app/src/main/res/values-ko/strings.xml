@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">구독 검색...</string>
     <string name="subscriptions_sort_label">채널 정렬</string>
     <string name="subscriptions_sort_default">기본순</string>
@@ -243,7 +243,7 @@
     <string name="new_update_available">새 업데이트가 있습니다</string>
     <string name="update_available_template">%1$s 버전을 사용할 수 있습니다</string>
     <string name="release_notes">업데이트 내용</string>
-    <string name="update_flow">Flow 업데이트</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">나중에</string>
     <string name="nav_home">홈</string>
     <string name="nav_shorts">Shorts</string>
@@ -289,7 +289,7 @@
     <string name="artist">아티스트</string>
     <string name="playlist">재생목록</string>
     <string name="playlist_visibility_metadata">%1$s • %2$s</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">맞춤 피드</string>
     <string name="import_newpipe_backup">NewPipe 백업 가져오기</string>
@@ -475,7 +475,7 @@
     <string name="settings_item_export_data_subtitle">데이터를 백업합니다</string>
     <string name="settings_item_import_data">데이터 가져오기</string>
     <string name="settings_item_import_data_subtitle">백업을 복원하거나 다른 앱에서 가져옵니다</string>
-    <string name="settings_item_about_flow">Flow 정보</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">버전, 라이선스, 기여자</string>
     <string name="settings_item_support">후원 및 기부</string>
     <string name="settings_item_support_subtitle">Flow 개발을 후원합니다</string>
@@ -2662,8 +2662,8 @@
         <item quantity="other">%1$d 스레드</item>
     </plurals>
     <string name="support_flow_open_collective">Open Collective에서 Flow 지원</string>
-    <string name="about_creator_name">A-EDev</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_creator_name">Masthan Valli</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">레딧</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="about_notices">오픈소스 공지</string>

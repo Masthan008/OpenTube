@@ -1,39 +1,22 @@
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/banners/flow-android-dark.svg">
-    <img alt="Flow. Privacy-first YouTube and YouTube Music for Android, with recommendations that stay on your phone." src="https://assets.flow-tube.org/v1/banners/flow-android-light.svg" width="100%">
-  </picture>
-
-  <h3>A privacy-respecting YouTube and YouTube Music client for Android with a local recommendation engine.</h3>
+  <img src="website/assets/logo.svg" alt="OpenTube" width="96" height="96">
+  <h1>OpenTube</h1>
+  <h3>A privacy-respecting YouTube and YouTube Music client for Android with on-device recommendations.</h3>
 
   <p>
-  <a href="https://github.com/Flow-Tube/Flow/releases/latest"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-github-dark.svg"><img alt="Get it on GitHub" src="https://assets.flow-tube.org/v1/badges/pill/get-github-light.svg" height="60"></picture></a>
-  <a href="https://apt.izzysoft.de/packages/io.github.aedev.flow"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-izzyondroid-dark.svg"><img alt="Get it on IzzyOnDroid" src="https://assets.flow-tube.org/v1/badges/pill/get-izzyondroid-light.svg" height="60"></picture></a>
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Flow-Tube/Flow/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-obtainium-dark.svg"><img alt="Get it on Obtainium" src="https://assets.flow-tube.org/v1/badges/pill/get-obtainium-light.svg" height="60"></picture></a>
-  <a href="https://github.com/Flow-Tube/Flow/releases/tag/nightly"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/get-nightly-dark.svg"><img alt="Try the Nightly build" src="https://assets.flow-tube.org/v1/badges/pill/get-nightly-light.svg" height="60"></picture></a>
-  </p>
-  <p>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/android-dark.svg"><img alt="Android 8.0+" src="https://assets.flow-tube.org/v1/badges/split/android-light.svg" height="32"></picture>
-  <a href="https://github.com/Flow-Tube/Flow/releases/latest"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/release-dark.svg"><img alt="Latest release" src="https://assets.flow-tube.org/v1/badges/split/release-light.svg" height="32"></picture></a>
-  <a href="https://github.com/Flow-Tube/Flow/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/downloads-dark.svg"><img alt="Downloads" src="https://assets.flow-tube.org/v1/badges/split/downloads-light.svg" height="32"></picture></a>
-  <a href="License"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/license-dark.svg"><img alt="License: GPL-3.0" src="https://assets.flow-tube.org/v1/badges/split/license-light.svg" height="32"></picture></a>
-  <a href="#cert"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/signed-dark.svg"><img alt="Signed: SHA-256 certificate" src="https://assets.flow-tube.org/v1/badges/split/signed-light.svg" height="32"></picture></a>
-  <a href="https://opencollective.com/flow-tube"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/split/opencollective-dark.svg"><img alt="Open Collective backers" src="https://assets.flow-tube.org/v1/badges/split/opencollective-light.svg" height="32"></picture></a>
-  </p>
-
-  <p>
-    Flow is a YouTube client built with Jetpack Compose and Material 3.<br>
-    It includes FlowNeuro, a recommendation engine that runs entirely on your device — no accounts, no tracking, no data leaves your phone.
-  </p>
-  
-  <p>
-    <a href="https://github.com/Flow-Tube/Flow/releases"><b>Download APK</b></a> · 
-    <a href="https://github.com/Flow-Tube/Flow/wiki"><b>Documentation</b></a> · 
-    <a href="https://www.reddit.com/r/Flow_Official/"><b>Subreddit</b></a> · 
-    <a href="#support--donations"><b>Donate</b></a> .
-    <a href="#translate"><b>Translations</b></a>
+    <a href="https://github.com/Masthan008/OpenTube/releases/latest"><b>Download Latest APK</b></a> · 
+    <a href="https://opentube.vercel.app"><b>Website</b></a> · 
+    <a href="https://github.com/Masthan008/OpenTube/discussions"><b>Discussions</b></a> · 
+    <a href="License"><b>License (GPLv3)</b></a>
   </p>
 </div>
+
+---
+
+<p align="center">
+  <b>OpenTube</b> is a YouTube & YouTube Music client built with Jetpack Compose and Material 3.<br>
+  It includes an on-device recommendation engine that runs entirely on your phone — no accounts, no tracking, no data leaves your phone.
+</p>
 
 ---
 
@@ -176,7 +159,7 @@ Flow Nightly is built from every commit to `main`. It installs next to the stabl
 To ensure the authenticity of the APK and verify it has not been tampered with, you can check the signing certificate fingerprint using tools like [AppVerifier](https://github.com/soupslurpr/AppVerifier).
 
 **Release Certificate SHA-256 Fingerprint:**
-`43:22:29:4E:D4:CA:A2:D4:29:41:40:09:58:18:08:0F:FE:8A:CC:1F:BE:3C:DC:76:10:7D:F4:5C:52:86:BE:40`
+`C1:94:E3:B1:23:A1:72:BC:27:75:4A:0C:66:6C:CA:D0:4F:45:EB:56:A1:04:CA:F4:1F:A2:AA:55:2C:03:19:AD`
 
 ---
 
@@ -238,29 +221,17 @@ Help translate Flow into your language!
 
 ## 📄 License & Copyright
 
-**Flow** is Free Software: You can use, study, share, and improve it at your will.
+**OpenTube** is Free Software: You can use, study, share, and improve it at your will.
 It is distributed under the **GNU General Public License v3 (GPLv3)**.
 
-**Copyright © 2025-2026 A-EDev**
+**Copyright © 2026 Masthan Valli (Masthan008). Based on Flow by A-EDev.**
 
 > 🚨 **For Developers:**
-> This license requires that any project using Flow's source code (including the `FlowNeuroEngine` algorithm) must also be **Open Source** under the GPLv3 license. You may not use this code in a proprietary or closed-source application.
-
----
-
-## Star History
-
-<a href="https://github.com/Flow-Tube/Flow/stargazers">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/stars/stars-flow-android-dark.svg">
-    <img alt="Star history of Flow for Android" src="https://assets.flow-tube.org/v1/stars/stars-flow-android-light.svg" width="100%">
-  </picture>
-</a>
+> This license requires that any project using OpenTube's source code (including the recommendation algorithms) must also be **Open Source** under the GPLv3 license. You may not use this code in a proprietary or closed-source application.
 
 ---
 
 <div align="center">
-  <a href="https://github.com/Flow-Tube"><picture><source media="(prefers-color-scheme: dark)" srcset="https://assets.flow-tube.org/v1/badges/pill/part-of-flow-dark.svg"><img alt="Part of the Flow ecosystem" src="https://assets.flow-tube.org/v1/badges/pill/part-of-flow-light.svg" height="60"></picture></a>
-  <br><br>
-  <sub>Made with ❤️ by A-EDev</sub>
+  <br>
+  <sub>Made with ❤️ by <a href="https://github.com/Masthan008">Masthan Valli (@Masthan008)</a></sub>
 </div>

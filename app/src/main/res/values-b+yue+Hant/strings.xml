@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">搜尋訂閱 …</string>
     <string name="subscriptions_sort_label">排序頻道</string>
     <string name="subscriptions_sort_default">預設</string>
@@ -343,7 +343,7 @@
     <string name="new_update_available">有新嘅更新</string>
     <string name="update_available_template">%1$s 而家有得賣</string>
     <string name="release_notes">發佈筆記</string>
-    <string name="update_flow">更新 Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">可能遲啲</string>
     <string name="nav_home">首頁</string>
     <string name="nav_shorts">Shorts</string>
@@ -405,7 +405,7 @@
     <string name="channel_links">連結</string>
     <string name="artist">藝術家，歌手</string>
     <string name="playlist">播放清單</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9 +</string>
     <string name="personalized_feed">你嘅個人化資訊提供</string>
     <plurals name="videos_curated_template">
@@ -748,7 +748,7 @@
     <string name="settings_item_export_data_subtitle">備份你嘅數據</string>
     <string name="settings_item_import_data">匯入數據</string>
     <string name="settings_item_import_data_subtitle">由備份還原或者由其他應用程式匯入</string>
-    <string name="settings_item_about_flow">關於 Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">版本、授權、貢獻者</string>
     <string name="settings_item_support">支持同捐款</string>
     <string name="settings_item_support_subtitle">幫手支持 Flow 嘅開發</string>
@@ -1763,7 +1763,7 @@
     <string name="donation_prompt_later">可能遲啲</string>
     <string name="donation_prompt_never">唔好再顯示</string>
     <string name="about_creator">創造者</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">網站</string>
     <string name="about_website_address">流管 . org</string>
     <string name="about_reddit">Reddit</string>

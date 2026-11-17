@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">ຊອກຫາການສະໝັກຮັບຊົມ ...</string>
     <string name="subscriptions_sort_label">ຈັດຮຽງຊ່ອງ</string>
     <string name="subscriptions_sort_default">ຄ່າເລີ່ມຕົ້ນ</string>
@@ -343,7 +343,7 @@
     <string name="new_update_available">ມີອັບເດດໃໝ່</string>
     <string name="update_available_template">%1$s ມີໃຫ້ແລ້ວ</string>
     <string name="release_notes">ບັນທຶກການປ່ອຍ</string>
-    <string name="update_flow">ອັບເດດ Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">ບາງທີຕໍ່ມາ</string>
     <string name="nav_home">ໜ້າຫຼັກ</string>
     <string name="nav_shorts">Shorts</string>
@@ -405,7 +405,7 @@
     <string name="channel_links">ລິ້ງຄ໌</string>
     <string name="artist">ສິລະປິນ</string>
     <string name="playlist">ລາຍການຫຼິ້ນ</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">ຟີດສ່ວນຕົວຂອງທ່ານ</string>
     <plurals name="videos_curated_template">
@@ -748,7 +748,7 @@
     <string name="settings_item_export_data_subtitle">ສຳຮອງຂໍ້ມູນຂອງທ່ານ</string>
     <string name="settings_item_import_data">ຂໍ້ມູນນໍາເຂົ້າ</string>
     <string name="settings_item_import_data_subtitle">ຟື້ນຟູຈາກການສໍາຮອງຂໍ້ມູນຫຼືນໍາເຂົ້າຈາກແອັບຯອື່ນ</string>
-    <string name="settings_item_about_flow">ກ່ຽວກັບ Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">ຮຸ່ນ, ໃບອະນຸຍາດ, ຜູ້ປະກອບສ່ວນ</string>
     <string name="settings_item_support">ການຊ່ວຍເຫຼືອ &amp; ການບໍລິຈາກ</string>
     <string name="settings_item_support_subtitle">ຊ່ວຍສະຫນັບສະຫນູນການພັດທະນາຂອງ Flow</string>
@@ -1763,9 +1763,9 @@
     <string name="donation_prompt_later">ບາງທີຕໍ່ມາ</string>
     <string name="donation_prompt_never">ຢ່າສະແດງອີກ</string>
     <string name="about_creator">ຜູ້ສ້າງ</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website">ເວັບໄຊທ໌</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="github_subtitle">ລະຫັດແຫຼ່ງ &amp; ບັນຫາ</string>

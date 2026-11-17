@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">Cerca iscrizioni …</string>
     <string name="top_bar_subscriptions_title">Iscrizioni</string>
     <string name="subscribed">Iscritto</string>
@@ -151,7 +151,7 @@
     <string name="new_update_available">Nuovo aggiornamento disponibile</string>
     <string name="update_available_template">%1$s è ora disponibile</string>
     <string name="release_notes">NOTE DI RILASCIO</string>
-    <string name="update_flow">Aggiorna Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Forse più tardi</string>
     <string name="nav_home">Home</string>
     <string name="nav_shorts">Shorts</string>
@@ -185,7 +185,7 @@
     <string name="chapters">Capitoli</string>
     <string name="artist">Artista</string>
     <string name="playlist">Playlist</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">Il tuo feed personalizzato</string>
     <string name="import_newpipe_backup">Importa backup di NewPipe</string>
@@ -333,7 +333,7 @@
     <string name="settings_item_export_data_subtitle">Esegui il backup dei tuoi dati</string>
     <string name="settings_item_import_data">Importa dati</string>
     <string name="settings_item_import_data_subtitle">Reimposta da un backup o importa da un\'altra app</string>
-    <string name="settings_item_about_flow">Informazioni su Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Versione, licenza, collaboratori</string>
     <string name="settings_item_support">Supporto e donazioni</string>
     <string name="settings_item_support_subtitle">Contribuisci allo sviluppo di Flow</string>
@@ -1896,7 +1896,7 @@
     <string name="playlist_filter_owned">Posseduto</string>
     <string name="content_settings_hide_unplayable_subscriptions_title">Nascondi i video non riproducibili dalle Iscrizioni</string>
     <string name="content_settings_hide_unplayable_subscriptions_subtitle">Nascondi i video privati, rimossi e limitati che non riescono ad essere riprodotti</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website_address">flow.aedev.me</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>

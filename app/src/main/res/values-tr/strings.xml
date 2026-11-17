@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">Aboneliklerde ara...</string>
     <string name="top_bar_subscriptions_title">Abonelikler</string>
     <string name="view_all_button_label">Tümü</string>
@@ -191,7 +191,7 @@
     <string name="new_update_available">Yeni Güncelleme Mevcut</string>
     <string name="update_available_template">%1$s kullanıma hazır</string>
     <string name="release_notes">SÜRÜM NOTLARI</string>
-    <string name="update_flow">Flow\'u Güncelle</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Belki daha sonra</string>
     <string name="nav_home">Ana sayfa</string>
     <string name="nav_shorts">Shorts</string>
@@ -210,7 +210,7 @@
     <string name="views_template">%1$s görüntüleme</string>
     <string name="artist">Sanatçı</string>
     <string name="playlist">Oynatma listesi</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="import_newpipe_backup">NewPipe Yedeğini içe aktar</string>
     <string name="importing_from_backup">NewPipe yedeğinden abonelikler içe aktarılıyor...</string>
@@ -567,7 +567,7 @@
     <string name="settings_item_export_data_subtitle">Verileri Yedekle</string>
     <string name="settings_item_import_data">Verileri İçe Aktar</string>
     <string name="settings_item_import_data_subtitle">Yedekleri geri yükle ya da diğer uygulamadan içe aktar</string>
-    <string name="settings_item_about_flow">Flow Hakkında</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Sürüm, Lisans, Katkıda bulunanlar</string>
     <string name="settings_item_support">Destek &amp; Bağış</string>
     <string name="settings_item_support_subtitle">Flow\'un geliştirilmesine katkıda bulunun</string>
@@ -2809,8 +2809,8 @@
         <item quantity="other">%1$d iş parçacığı</item>
     </plurals>
     <string name="support_flow_open_collective">Open Collective\'de Flow\'u destekle</string>
-    <string name="about_creator_name">A-EDev</string>
-    <string name="about_website_address">flow-tube.org</string>
+    <string name="about_creator_name">Masthan Valli</string>
+    <string name="about_website_address">opentube.vercel.app</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_reddit_subtitle">r/Flow_Official</string>
     <string name="about_notices">Açık kaynak bildirimleri</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscribers_count_template">%1$s subskrybentów</string>
     <string name="error_yt_music_premium_hint">Ten utwór jest dostępny tylko dla subskrybentów YouTube Music Premium.</string>
     <string name="support_flow_dev_desc">Jeśli uważasz, że Flow jest przydatny i chcesz wesprzeć jego rozwój, możesz wesprzeć go na Open Collective lub Patreonie lub przekazać darowiznę za pośrednictwem poniższych adresów. Twoje wsparcie pomoże utrzymać projekt przy życiu!</string>
@@ -193,7 +193,7 @@
     <string name="new_update_available">Dostępna jest aktualizacja</string>
     <string name="update_available_template">%1$s jest już dostępny</string>
     <string name="release_notes">DZIENNIK ZMIAN</string>
-    <string name="update_flow">Zaktualizuj Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Może później</string>
     <string name="nav_home">Główna</string>
     <string name="nav_shorts">Shorts</string>
@@ -247,7 +247,7 @@
     <string name="chapters">Sekcje</string>
     <string name="artist">Artysta</string>
     <string name="playlist">Playlista</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">Twoja spersonalizowana zawartość</string>
     <string name="import_newpipe_backup">Importuj kopię zapasową z NewPipe</string>
@@ -415,7 +415,7 @@
     <string name="settings_item_export_data_subtitle">Utwórz kopię zapasową swoich danych</string>
     <string name="settings_item_import_data">Import Danych</string>
     <string name="settings_item_import_data_subtitle">Załaduj z kopii zapasowej lub importuj z innych aplikacji</string>
-    <string name="settings_item_about_flow">O aplikacji Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Wersja, Licencja, Współtwórcy</string>
     <string name="settings_item_support">Wsparcie i Wpłaty</string>
     <string name="settings_item_support_subtitle">Pomóż w rozwoju Flow</string>
@@ -1613,7 +1613,7 @@
     <string name="location_internal_app_desc">Dostępne wyłącznie dla aplikacji — pliki mogą zostać usunięte w przypadku odinstalowania aplikacji</string>
     <string name="location_manual_hint">/storage/emulated/0/…</string>
     <string name="location_badge_active">Aktywny</string>
-    <string name="about_creator_name">A-EDev</string>
+    <string name="about_creator_name">Masthan Valli</string>
     <string name="about_website_address">flow.aedev.me</string>
     <string name="about_reddit">Reddit</string>
     <string name="about_license_name">GNU GPL v3</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Flow</string>
+    <string name="app_name">OpenTube</string>
     <string name="subscriptions_search_placeholder">Претражи претплате...</string>
     <string name="subscriptions_sort_label">Сортирај канале</string>
     <string name="subscriptions_sort_default">Подразумевано</string>
@@ -361,7 +361,7 @@
     <string name="new_update_available">Ново ажурирање доступно</string>
     <string name="update_available_template">%1$s је сада доступан</string>
     <string name="release_notes">НАПОМЕНЕ О ИЗДАВАЊУ</string>
-    <string name="update_flow">Ажурирајте Flow</string>
+    <string name="update_flow">Update OpenTube</string>
     <string name="maybe_later">Можда касније</string>
     <string name="nav_home">Почетна</string>
     <string name="nav_shorts">Shorts</string>
@@ -423,7 +423,7 @@
     <string name="channel_links">Линкови</string>
     <string name="artist">Уметник</string>
     <string name="playlist">Плаилист</string>
-    <string name="app_name_uppercase">FLOW</string>
+    <string name="app_name_uppercase">OPENTUBE</string>
     <string name="notification_badge_9_plus">9+</string>
     <string name="personalized_feed">Ваш персонализовани феед</string>
     <plurals name="videos_curated_template">
@@ -790,7 +790,7 @@
     <string name="settings_item_export_data_subtitle">Направите резервну копију података</string>
     <string name="settings_item_import_data">Увоз података</string>
     <string name="settings_item_import_data_subtitle">Враћање из резервне копије или увоз из других апликација</string>
-    <string name="settings_item_about_flow">О Flow</string>
+    <string name="settings_item_about_flow">About OpenTube</string>
     <string name="settings_item_about_flow_subtitle">Верзија, лиценца, сарадници</string>
     <string name="settings_item_support">Подршка и донације</string>
     <string name="settings_item_support_subtitle">Помозите у подршци развоју Flow</string>
