@@ -59,8 +59,8 @@ android {
         applicationId = "io.github.masthan008.opentube"
         minSdk = 26
         targetSdk = 36
-        versionCode = 20
-        versionName = "3.0.5"
+        versionCode = 21
+        versionName = "3.0.6"
 
         buildConfigField("int", "NIGHTLY_RUN", "0")
         buildConfigField("String", "APP_LANGUAGE_TAGS", "\"${(listOf("en") + translatedLocaleTags()).joinToString(",")}\"")

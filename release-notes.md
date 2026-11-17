@@ -1,9 +1,11 @@
-# Flow v3.0.5
+# OpenTube v3.0.6
 
-**Release date:** 2026-11-16
+**Release date:** 2026-11-17
 **Status:** Stable
+**Developer:** Masthan Valli ([@Masthan008](https://github.com/Masthan008))
 
-Enjoying Flow? Consider supporting its development on [Open Collective](https://opencollective.com/flow-tube) or [Patreon](https://patreon.com/A_EDev) to help keep the app free, open source, ad-free, and improving!
+Welcome to the inaugural release of **OpenTube**!
+A privacy-respecting YouTube and YouTube Music client for Android with on-device smart recommendations, zero tracking, and no Google account required.
 
 ## Highlights
 

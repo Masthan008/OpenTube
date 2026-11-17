@@ -547,17 +547,17 @@ jobs:
       - name: Rename APKs for release
         run: |
           set -euo pipefail
-          mv dist/app-github-universal-release.apk   dist/flow.apk
-          mv dist/app-foss-universal-release.apk     dist/flow-foss.apk
-          mv dist/app-github-arm64-v8a-release.apk   dist/flow-arm64-v8a.apk
-          mv dist/app-github-armeabi-v7a-release.apk dist/flow-armeabi-v7a.apk
-          mv dist/app-foss-arm64-v8a-release.apk     dist/flow-foss-arm64-v8a.apk
-          mv dist/app-foss-armeabi-v7a-release.apk   dist/flow-foss-armeabi-v7a.apk
+          mv dist/app-github-universal-release.apk   dist/opentube.apk
+          mv dist/app-foss-universal-release.apk     dist/opentube-foss.apk
+          mv dist/app-github-arm64-v8a-release.apk   dist/opentube-arm64-v8a.apk
+          mv dist/app-github-armeabi-v7a-release.apk dist/opentube-armeabi-v7a.apk
+          mv dist/app-foss-arm64-v8a-release.apk     dist/opentube-foss-arm64-v8a.apk
+          mv dist/app-foss-armeabi-v7a-release.apk   dist/opentube-foss-armeabi-v7a.apk
 
       - name: Generate checksums
         run: |
           cd dist
-          sha256sum flow*.apk > checksums.txt
+          sha256sum opentube*.apk > checksums.txt
           cat checksums.txt
 
       - name: Get version from tag
@@ -569,22 +569,22 @@ jobs:
           RELEASE_VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: |
           test -s release-notes.md
-          grep -Fqx "# Flow ${RELEASE_VERSION}" release-notes.md
+          grep -Fqx "# OpenTube ${RELEASE_VERSION}" release-notes.md
 
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
-          name: Flow ${{ steps.get_version.outputs.VERSION }}
+          name: OpenTube ${{ steps.get_version.outputs.VERSION }}
           body_path: release-notes.md
           generate_release_notes: false
           files: |
-            dist/flow.apk
-            dist/flow-foss.apk
-            dist/flow-arm64-v8a.apk
-            dist/flow-armeabi-v7a.apk
-            dist/flow-foss-arm64-v8a.apk
-            dist/flow-foss-armeabi-v7a.apk
+            dist/opentube.apk
+            dist/opentube-foss.apk
+            dist/opentube-arm64-v8a.apk
+            dist/opentube-armeabi-v7a.apk
+            dist/opentube-foss-arm64-v8a.apk
+            dist/opentube-foss-armeabi-v7a.apk
             dist/checksums.txt
           draft: false
           prerelease: false
