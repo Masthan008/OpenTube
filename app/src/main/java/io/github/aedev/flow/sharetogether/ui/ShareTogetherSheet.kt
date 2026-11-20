@@ -39,6 +39,7 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -94,6 +95,7 @@ fun ShareTogetherSheet(
     val messages by ShareTogetherManager.chatMessages.collectAsStateWithLifecycle()
     val isMicMuted by ShareTogetherManager.isMicMuted.collectAsStateWithLifecycle()
     val isDeafened by ShareTogetherManager.isDeafened.collectAsStateWithLifecycle()
+    val isConnecting by ShareTogetherManager.isConnecting.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -117,18 +119,21 @@ fun ShareTogetherSheet(
                     hasProfileName = hasProfileName,
                     userName = userName,
                     avatarId = avatarId,
+                    isConnecting = isConnecting,
                     joinCodeInput = joinCodeInput,
                     onJoinCodeChange = { joinCodeInput = it },
                     onRequireProfile = onRequireProfile,
                     onCreateRoom = {
                         ShareTogetherManager.createRoom(
+                            context = context,
                             hostName = userName,
                             avatarId = avatarId,
                         )
                     },
                     onJoinRoom = { code ->
                         ShareTogetherManager.joinRoom(
-                            roomCode = code,
+                            context = context,
+                            roomCodeOrAddress = code,
                             memberName = userName,
                             avatarId = avatarId,
                         )
@@ -140,8 +145,13 @@ fun ShareTogetherSheet(
                     session = currentSession,
                     onCopyCode = {
                         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setPrimaryClip(ClipData.newPlainText("Share Together Code", currentSession.roomCode))
-                        Toast.makeText(context, context.getString(R.string.share_together_copied), Toast.LENGTH_SHORT).show()
+                        val copyText = if (currentSession.hostAddress.isNotBlank()) {
+                            "${currentSession.roomCode}@${currentSession.hostAddress}"
+                        } else {
+                            currentSession.roomCode
+                        }
+                        clipboard.setPrimaryClip(ClipData.newPlainText("Share Together Code", copyText))
+                        Toast.makeText(context, "${context.getString(R.string.share_together_copied)}: $copyText", Toast.LENGTH_SHORT).show()
                     },
                     onLeave = {
                         ShareTogetherManager.leaveRoom()
@@ -212,6 +222,7 @@ private fun UnjoinedRoomContent(
     hasProfileName: Boolean,
     userName: String,
     avatarId: Int,
+    isConnecting: Boolean,
     joinCodeInput: String,
     onJoinCodeChange: (String) -> Unit,
     onRequireProfile: () -> Unit,
@@ -249,6 +260,7 @@ private fun UnjoinedRoomContent(
                     onCreateRoom()
                 }
             },
+            enabled = !isConnecting,
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth().height(52.dp),
         ) {
@@ -279,6 +291,7 @@ private fun UnjoinedRoomContent(
                 onValueChange = onJoinCodeChange,
                 placeholder = { Text(stringResource(R.string.share_together_enter_code)) },
                 singleLine = true,
+                enabled = !isConnecting,
                 shape = RoundedCornerShape(14.dp),
                 modifier = Modifier.weight(1f),
             )
@@ -291,11 +304,32 @@ private fun UnjoinedRoomContent(
                         onJoinRoom(joinCodeInput.trim())
                     }
                 },
-                enabled = joinCodeInput.isNotBlank(),
+                enabled = joinCodeInput.isNotBlank() && !isConnecting,
                 shape = RoundedCornerShape(14.dp),
                 modifier = Modifier.height(52.dp),
             ) {
                 Text(stringResource(R.string.share_together_join_room))
+            }
+        }
+
+        if (isConnecting) {
+            Spacer(Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(18.dp),
+                    strokeWidth = 2.dp,
+                    color = colorScheme.primary,
+                )
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    text = "Connecting to room on Wi-Fi / Hotspot...",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colorScheme.primary,
+                )
             }
         }
     }
@@ -335,6 +369,13 @@ private fun ActiveRoomHeader(
                     contentDescription = null,
                     tint = colorScheme.primary,
                     modifier = Modifier.size(16.dp),
+                )
+            }
+            if (session.hostAddress.isNotBlank()) {
+                Text(
+                    text = "LAN / Wi-Fi: ${session.hostAddress}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = colorScheme.onSurfaceVariant,
                 )
             }
         }

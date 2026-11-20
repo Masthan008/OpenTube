@@ -134,11 +134,6 @@ object ShareTogetherSyncEngine {
             val localTrack = EnhancedMusicPlayerManager.currentTrack.value
             val localState = EnhancedMusicPlayerManager.playerState.value
 
-            // If a different track is playing, load it
-            if (localTrack?.videoId != remote.mediaId && remote.mediaId.isNotBlank()) {
-                // Future: trigger track load
-            }
-
             // Sync Play/Pause
             if (localState.isPlaying != remote.isPlaying) {
                 if (remote.isPlaying) {
@@ -172,6 +167,25 @@ object ShareTogetherSyncEngine {
                         EnhancedMusicPlayerManager.setPlaybackSpeed(1.0f)
                     }
                 }
+            }
+        } else {
+            // Video sync
+            val isVideoPlaying = GlobalPlayerState.playerState.value.isPlaying
+            val videoPos = EnhancedPlayerManager.getInstance().getCurrentPosition()
+
+            if (isVideoPlaying != remote.isPlaying) {
+                if (remote.isPlaying) {
+                    EnhancedPlayerManager.getInstance().play()
+                } else {
+                    EnhancedPlayerManager.getInstance().pause()
+                }
+            }
+
+            val elapsedTime = (System.currentTimeMillis() - remote.timestamp).coerceAtLeast(0L)
+            val expectedPosition = remote.positionMs + if (remote.isPlaying) elapsedTime else 0L
+            val drift = expectedPosition - videoPos
+            if (abs(drift) > 1500L) {
+                EnhancedPlayerManager.getInstance().seekTo(expectedPosition)
             }
         }
     }

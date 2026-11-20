@@ -71,6 +71,7 @@ import io.github.aedev.flow.R
 import io.github.aedev.flow.data.local.PlayerPreferences
 import io.github.aedev.flow.player.EnhancedMusicPlayerManager
 import io.github.aedev.flow.player.GlobalPlayerState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -112,13 +113,14 @@ fun OpenTubeIslandHost(
     onExpandVideoPlayer: () -> Unit = {},
     isFullPlayerExpanded: Boolean = false,
     onExpandPlayer: () -> Unit = {},
+    hasActiveRoom: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val preferences = remember(context) { PlayerPreferences(context) }
     val islandEnabled by preferences.originIslandEnabled.collectAsStateWithLifecycle(initialValue = true)
 
-    if (!islandEnabled) return
+    if (!islandEnabled || hasActiveRoom) return
 
     // 1. Music track & state
     val currentTrack by EnhancedMusicPlayerManager.currentTrack.collectAsStateWithLifecycle(initialValue = null)
@@ -168,11 +170,23 @@ fun OpenTubeIslandHost(
     }
 
     var userDismissedMediaId by remember { mutableStateOf<String?>(null) }
+    var pauseGracePeriod by remember { mutableStateOf(false) }
 
     val activeMedia = media
     LaunchedEffect(activeMedia?.id) {
         if (activeMedia != null && activeMedia.id != userDismissedMediaId) {
             userDismissedMediaId = null
+        }
+    }
+
+    LaunchedEffect(activeMedia?.isPlaying) {
+        if (activeMedia?.isPlaying == true) {
+            pauseGracePeriod = true
+        } else if (activeMedia != null) {
+            delay(3500)
+            pauseGracePeriod = false
+        } else {
+            pauseGracePeriod = false
         }
     }
 
@@ -183,9 +197,10 @@ fun OpenTubeIslandHost(
             else -> false
         }
 
-    val visible by remember(activeMedia, isExpanded, userDismissedMediaId) {
+    val visible by remember(activeMedia, isExpanded, userDismissedMediaId, pauseGracePeriod) {
         derivedStateOf {
             activeMedia != null &&
+                (activeMedia.isPlaying || pauseGracePeriod) &&
                 !isExpanded &&
                 userDismissedMediaId != activeMedia.id
         }

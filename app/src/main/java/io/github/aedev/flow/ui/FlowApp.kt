@@ -147,6 +147,8 @@ fun FlowApp(
     val shareTogetherAvatarId by preferences.shareTogetherAvatarId.collectAsState(initial = 0)
     var showShareTogetherSheet by remember { mutableStateOf(false) }
     var showShareTogetherProfileDialog by remember { mutableStateOf(false) }
+    val shareTogetherSession by io.github.aedev.flow.sharetogether.session.ShareTogetherManager.session.collectAsState(initial = null)
+    val isShareTogetherRoomActive = shareTogetherSession != null
 
     LaunchedEffect(Unit) {
         ShareTogetherSyncEngine.start()
@@ -582,6 +584,7 @@ fun FlowApp(
             isVideoPlayerExpanded = playerSheetState.currentValue == PlayerSheetValue.Expanded,
             onExpandMusicPlayer = { musicPlayerSheetState.expand() },
             onExpandVideoPlayer = { playerSheetState.expand() },
+            hasActiveRoom = isShareTogetherRoomActive,
             modifier = Modifier.align(Alignment.TopCenter),
         )
 
