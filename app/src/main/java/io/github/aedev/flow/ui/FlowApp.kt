@@ -42,6 +42,11 @@ import io.github.aedev.flow.ui.components.donation.DonationPromptHost
 import io.github.aedev.flow.ui.components.equalizer.LocalEqualizerState
 import io.github.aedev.flow.ui.components.layout.LocalFlowBottomInsets
 import io.github.aedev.flow.ui.components.layout.LocalFlowSnackbarHostState
+import io.github.aedev.flow.sharetogether.player.ShareTogetherSyncEngine
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherPill
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherProfileDialog
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherReactionOverlay
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherSheet
 import io.github.aedev.flow.ui.components.layout.navigation.FlowNavigationChrome
 import io.github.aedev.flow.ui.components.layout.navigation.FlowNavigationDefaults
 import io.github.aedev.flow.ui.components.layout.navigation.FlowTab
@@ -82,7 +87,10 @@ import io.github.aedev.flow.ui.screens.update.UpdateLaunchEffect
 import io.github.aedev.flow.ui.theme.ThemeMode
 import io.github.aedev.flow.ui.theme.ThemeVariant
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+
+val LocalOpenShareTogether = androidx.compose.runtime.staticCompositionLocalOf<() -> Unit> { {} }
 
 @UnstableApi
 @Composable
@@ -106,6 +114,7 @@ fun FlowApp(
     val activity = context as? androidx.activity.ComponentActivity
     val navController = rememberNavController()
     val snackbarHostState = remember { androidx.compose.material3.SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     val playerViewModel: VideoPlayerViewModel = hiltViewModel(activity!!)
     // Activity-scoped so the unread badge has exactly one collector for the whole shell.
@@ -132,6 +141,16 @@ fun FlowApp(
     val pageTransitionStyle by preferences.pageTransitionStyle.collectAsState(initial = PageTransitionStyle.SLIDE)
     val searchShowsNavBar by preferences.searchShowsNavBar.collectAsState(initial = false)
     val innerPagesShowNavBar by preferences.innerPagesShowNavBar.collectAsState(initial = false)
+
+    // Share Together co-watching and co-listening state
+    val shareTogetherName by preferences.shareTogetherUserName.collectAsState(initial = "")
+    val shareTogetherAvatarId by preferences.shareTogetherAvatarId.collectAsState(initial = 0)
+    var showShareTogetherSheet by remember { mutableStateOf(false) }
+    var showShareTogetherProfileDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        ShareTogetherSyncEngine.start()
+    }
     val sleepTimerCloseAppOnExpiry by preferences.sleepTimerCloseAppOnExpiry.collectAsState(
         initial = SleepTimerManager.preferredCloseAppOnExpiry,
     )
@@ -471,6 +490,13 @@ fun FlowApp(
                                     LocalFlowBottomInsets provides bottomInsets,
                                     LocalFlowSnackbarHostState provides snackbarHostState,
                                     LocalStatusBarHero provides statusBarHero,
+                                    LocalOpenShareTogether provides {
+                                        if (shareTogetherName.isBlank()) {
+                                            showShareTogetherProfileDialog = true
+                                        } else {
+                                            showShareTogetherSheet = true
+                                        }
+                                    },
                                 ) {
                                     Box(modifier = Modifier.fillMaxSize()) {
                                         if (needsOnboarding == false) SubscriptionBellAlerts(snackbarHostState)
@@ -559,6 +585,19 @@ fun FlowApp(
             modifier = Modifier.align(Alignment.TopCenter),
         )
 
+        ShareTogetherPill(
+            onClick = {
+                if (shareTogetherName.isBlank()) {
+                    showShareTogetherProfileDialog = true
+                } else {
+                    showShareTogetherSheet = true
+                }
+            },
+            modifier = Modifier.align(Alignment.TopCenter),
+        )
+
+        ShareTogetherReactionOverlay()
+
         androidx.compose.material3.SnackbarHost(
             hostState = snackbarHostState,
             modifier =
@@ -583,5 +622,34 @@ fun FlowApp(
             enabled = needsOnboarding == false && !isInPipMode && !playerVisible,
             onNavigateToDonations = { navController.navigate("donations") },
         )
+
+        if (showShareTogetherProfileDialog) {
+            ShareTogetherProfileDialog(
+                initialName = shareTogetherName,
+                initialAvatarId = shareTogetherAvatarId,
+                onSave = { name, avatar ->
+                    coroutineScope.launch {
+                        preferences.setShareTogetherUserName(name)
+                        preferences.setShareTogetherAvatarId(avatar)
+                        showShareTogetherProfileDialog = false
+                        showShareTogetherSheet = true
+                    }
+                },
+                onDismiss = { showShareTogetherProfileDialog = false },
+            )
+        }
+
+        if (showShareTogetherSheet) {
+            ShareTogetherSheet(
+                onDismiss = { showShareTogetherSheet = false },
+                onRequireProfile = {
+                    showShareTogetherSheet = false
+                    showShareTogetherProfileDialog = true
+                },
+                hasProfileName = shareTogetherName.isNotBlank(),
+                userName = shareTogetherName,
+                avatarId = shareTogetherAvatarId,
+            )
+        }
     }
 }

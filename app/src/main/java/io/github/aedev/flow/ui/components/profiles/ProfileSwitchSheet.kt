@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.ManageAccounts
 import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import io.github.aedev.flow.ui.LocalOpenShareTogether
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -160,6 +162,19 @@ internal fun ProfileSwitchSheet(
                                 onManage()
                             },
                             leadingIcon = Icons.Outlined.ManageAccounts,
+                            shape = shape,
+                        )
+                    },
+                    QuickActionRow("profiles.share_together") { shape ->
+                        val openShareTogether = LocalOpenShareTogether.current
+                        FlowNavRow(
+                            title = stringResource(R.string.share_together_title),
+                            supportingText = stringResource(R.string.share_together_subtitle),
+                            onClick = {
+                                sheet.close()
+                                openShareTogether()
+                            },
+                            leadingIcon = Icons.Outlined.Share,
                             shape = shape,
                         )
                     },

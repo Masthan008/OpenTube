@@ -38,6 +38,7 @@ import io.github.aedev.flow.ui.components.shared.ArtworkThumbnail
 import io.github.aedev.flow.ui.components.shared.ChannelAvatarStack
 import io.github.aedev.flow.ui.components.shared.FlowNavRow
 import io.github.aedev.flow.ui.components.shared.quickactions.MediaDetailsPage
+import io.github.aedev.flow.ui.LocalOpenShareTogether
 import io.github.aedev.flow.ui.components.shared.quickactions.MediaDetailsSubject
 import io.github.aedev.flow.ui.components.shared.quickactions.QuickActionRow
 import io.github.aedev.flow.ui.components.shared.quickactions.QuickActionsDefaults
@@ -282,6 +283,18 @@ private fun playbackRows(
                 },
             )
         }
+        val openShareTogether = LocalOpenShareTogether.current
+        add(
+            actionRow(
+                "share_together",
+                Icons.Outlined.Share,
+                stringResource(R.string.share_together_title),
+                stringResource(R.string.share_together_subtitle),
+            ) {
+                openShareTogether()
+                onDismiss()
+            },
+        )
         player.onCastClick?.let { open ->
             add(
                 actionRow("cast", Icons.Outlined.Cast, stringResource(R.string.cast_to_tv), stringResource(R.string.cast_to_tv_desc)) {

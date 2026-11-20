@@ -449,6 +449,10 @@ class PlayerPreferences(
         val DATE_MODE_LISTS = stringPreferencesKey("date_mode_lists")
         val DATE_MODE_WATCH = stringPreferencesKey("date_mode_watch")
         val DATE_MODE_DESCRIPTION = stringPreferencesKey("date_mode_description")
+
+        // Share Together co-watching and co-listening identity
+        val SHARE_TOGETHER_USER_NAME = stringPreferencesKey("share_together_user_name")
+        val SHARE_TOGETHER_AVATAR_ID = intPreferencesKey("share_together_avatar_id")
     }
 
     /** Keys kept in the device store and shared by every profile; see DevicePreferencesStore.kt. */
@@ -1861,6 +1865,28 @@ class PlayerPreferences(
     suspend fun setOriginIslandEnabled(enabled: Boolean) {
         context.playerPreferencesDataStore.edit { preferences ->
             preferences[Keys.ORIGIN_ISLAND_ENABLED] = enabled
+        }
+    }
+
+    val shareTogetherUserName: Flow<String> =
+        context.playerPreferencesDataStore.data
+            .map { preferences -> preferences[Keys.SHARE_TOGETHER_USER_NAME].orEmpty() }
+            .distinctUntilChanged()
+
+    suspend fun setShareTogetherUserName(name: String) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.SHARE_TOGETHER_USER_NAME] = name
+        }
+    }
+
+    val shareTogetherAvatarId: Flow<Int> =
+        context.playerPreferencesDataStore.data
+            .map { preferences -> preferences[Keys.SHARE_TOGETHER_AVATAR_ID] ?: 0 }
+            .distinctUntilChanged()
+
+    suspend fun setShareTogetherAvatarId(id: Int) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.SHARE_TOGETHER_AVATAR_ID] = id
         }
     }
 
