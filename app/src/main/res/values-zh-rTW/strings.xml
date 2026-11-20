@@ -362,7 +362,7 @@
     <string name="settings_item_import_data">匯入資料</string>
     <string name="settings_item_import_data_subtitle">從備份還原或從其他應用程式匯入</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">版本、授權、貢獻者</string>
+    <string name="settings_item_about_flow_subtitle">版本、授權條款與相關連結</string>
     <string name="settings_item_support">支援與捐款</string>
     <string name="settings_item_support_subtitle">協助支持 OpenTube 的開發</string>
     <string name="settings_region_dialog_title">選擇地區</string>

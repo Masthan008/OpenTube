@@ -809,7 +809,7 @@
     <string name="settings_item_import_data">Uvoz podatkov</string>
     <string name="settings_item_import_data_subtitle">Obnovite iz varnostne kopije ali uvozite iz drugih aplikacij</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Različica, licenca, sodelavci</string>
+    <string name="settings_item_about_flow_subtitle">Različica, licenca in povezave</string>
     <string name="settings_item_support">Podpora in donacije</string>
     <string name="settings_item_support_subtitle">Pomagajte podpreti razvoj OpenTube</string>
     <string name="settings_region_dialog_title">Izberite Regija</string>

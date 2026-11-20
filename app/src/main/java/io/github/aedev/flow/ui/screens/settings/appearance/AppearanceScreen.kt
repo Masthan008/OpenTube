@@ -30,6 +30,7 @@ import io.github.aedev.flow.R
 import io.github.aedev.flow.data.local.AppFontSelection
 import io.github.aedev.flow.data.local.HomeFeedColumns
 import io.github.aedev.flow.data.local.HomeViewMode
+import io.github.aedev.flow.data.local.PageTransitionStyle
 import io.github.aedev.flow.platform.AppUiMode
 import io.github.aedev.flow.ui.components.settings.SettingsDestination
 import io.github.aedev.flow.ui.components.settings.SettingsPage
@@ -43,6 +44,7 @@ import io.github.aedev.flow.ui.components.shared.FlowChoiceDialog
 import io.github.aedev.flow.ui.components.shared.FlowToggleOption
 import io.github.aedev.flow.ui.screens.settings.index.AppearanceIndex
 import io.github.aedev.flow.ui.screens.settings.index.DestinationIndex
+import io.github.aedev.flow.ui.screens.settings.index.NavigationBarIndex
 import io.github.aedev.flow.ui.screens.settings.index.NewSettingsPolicy
 import io.github.aedev.flow.ui.theme.AppFont
 import io.github.aedev.flow.ui.theme.GridItemSize
@@ -75,6 +77,7 @@ internal fun AppearanceScreen(
     val groupBadges by viewModel.groupBadges.collectAsStateWithLifecycle()
     val cardLikeButtons by viewModel.cardLikeButtons.collectAsStateWithLifecycle()
     val cardMarkWatched by viewModel.cardMarkWatched.collectAsStateWithLifecycle()
+    val pageTransitionStyle by viewModel.pageTransitionStyle.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -117,6 +120,13 @@ internal fun AppearanceScreen(
         listOf(
             FlowToggleOption(GridItemSize.BIG, stringResource(R.string.content_settings_grid_big_title)),
             FlowToggleOption(GridItemSize.SMALL, stringResource(R.string.content_settings_grid_small_title)),
+        )
+    val pageTransitionOptions =
+        listOf(
+            FlowToggleOption(PageTransitionStyle.SLIDE, stringResource(R.string.settings_page_transition_slide)),
+            FlowToggleOption(PageTransitionStyle.FADE, stringResource(R.string.settings_page_transition_fade)),
+            FlowToggleOption(PageTransitionStyle.ZOOM, stringResource(R.string.settings_page_transition_zoom)),
+            FlowToggleOption(PageTransitionStyle.RISE, stringResource(R.string.settings_page_transition_rise)),
         )
 
     SettingsPage(
@@ -213,6 +223,24 @@ internal fun AppearanceScreen(
             switch(AppearanceIndex.cardLikeButtons, cardLikeButtons, viewModel::setCardLikeButtons)
             switch(AppearanceIndex.cardWatchProgress, viewModel.cardWatchProgress, viewModel::setCardWatchProgress)
             switch(AppearanceIndex.cardMarkWatched, cardMarkWatched, viewModel::setCardMarkWatched)
+        }
+        group(key = "appearance.motion", header = R.string.settings_page_transition_title) {
+            switch(
+                AppearanceIndex.openingAnimation,
+                viewModel.openingAnimation,
+                viewModel::setOpeningAnimation,
+            )
+            switch(
+                AppearanceIndex.originIsland,
+                viewModel.originIslandEnabled,
+                viewModel::setOriginIslandEnabled,
+            )
+            toggleGroup(
+                NavigationBarIndex.pageTransition,
+                pageTransitionOptions,
+                pageTransitionStyle,
+                viewModel::setPageTransitionStyle,
+            )
         }
         group(key = "appearance.more", header = R.string.settings_section_more) {
             listOf(

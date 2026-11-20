@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -16,6 +17,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
@@ -54,6 +56,37 @@ fun Modifier.pressScale(
         scaleX = scale.value
         scaleY = scale.value
     }
+}
+
+/**
+ * A tactile click that sinks slightly under the finger on a responsive spring and pops back,
+ * providing iOS/M3 Expressive-style tactile feedback on cards, tiles, and standalone buttons.
+ */
+@Composable
+fun Modifier.pressable(
+    onClick: () -> Unit,
+    pressedScale: Float = 0.95f,
+    enabled: Boolean = true,
+): Modifier {
+    val interaction = remember { MutableInteractionSource() }
+    val isPressed by interaction.collectIsPressedAsState()
+    val scale =
+        animateFloatAsState(
+            targetValue = if (isPressed && enabled) pressedScale else 1f,
+            animationSpec = spring(dampingRatio = 0.55f, stiffness = 600f),
+            label = "pressableSpring",
+        )
+    return this
+        .graphicsLayer {
+            scaleX = scale.value
+            scaleY = scale.value
+        }
+        .clickable(
+            interactionSource = interaction,
+            indication = null,
+            enabled = enabled,
+            onClick = onClick,
+        )
 }
 
 /**

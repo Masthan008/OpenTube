@@ -92,4 +92,6 @@ internal fun miniBackgroundLabel(background: MiniBarBackground): Int =
         MiniBarBackground.COVER_COLOURS -> R.string.mini_background_cover_colours
         MiniBarBackground.BLACK -> R.string.mini_background_black
         MiniBarBackground.OUTLINED -> R.string.mini_background_outlined
+        MiniBarBackground.LIQUID_GLASS -> R.string.settings_glass_style_liquid
+        MiniBarBackground.FROSTED_GLASS -> R.string.settings_glass_style_frosted
     }

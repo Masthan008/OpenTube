@@ -802,7 +802,7 @@
     <string name="settings_item_import_data">Importar dados</string>
     <string name="settings_item_import_data_subtitle">Restaure a partir do backup ou importe de outras aplicações</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Versão, Licença, Colaboradores</string>
+    <string name="settings_item_about_flow_subtitle">Versão, licença e links</string>
     <string name="settings_item_support">Apoio e Donativos</string>
     <string name="settings_item_support_subtitle">Ajude a apoiar o desenvolvimento do OpenTube</string>
     <string name="settings_region_dialog_title">Selecione a região</string>

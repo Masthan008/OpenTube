@@ -568,7 +568,7 @@
     <string name="settings_item_import_data">Verileri İçe Aktar</string>
     <string name="settings_item_import_data_subtitle">Yedekleri geri yükle ya da diğer uygulamadan içe aktar</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Sürüm, Lisans, Katkıda bulunanlar</string>
+    <string name="settings_item_about_flow_subtitle">Sürüm, lisans ve bağlantılar</string>
     <string name="settings_item_support">Destek &amp; Bağış</string>
     <string name="settings_item_support_subtitle">OpenTube\'un geliştirilmesine katkıda bulunun</string>
     <string name="settings_region_dialog_title">Bölge Seç</string>

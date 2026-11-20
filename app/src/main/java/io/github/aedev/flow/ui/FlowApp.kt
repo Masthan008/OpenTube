@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -27,6 +28,7 @@ import io.github.aedev.flow.MainActivity
 import io.github.aedev.flow.data.local.NavBarLook
 import io.github.aedev.flow.data.local.NavBarScroll
 import io.github.aedev.flow.data.local.NavBarStyle
+import io.github.aedev.flow.data.local.PageTransitionStyle
 import io.github.aedev.flow.data.local.PlayerPreferences
 import io.github.aedev.flow.data.profile.PendingSlice
 import io.github.aedev.flow.data.recommendation.FlowNeuroEngine
@@ -43,6 +45,7 @@ import io.github.aedev.flow.ui.components.layout.LocalFlowSnackbarHostState
 import io.github.aedev.flow.ui.components.layout.navigation.FlowNavigationChrome
 import io.github.aedev.flow.ui.components.layout.navigation.FlowNavigationDefaults
 import io.github.aedev.flow.ui.components.layout.navigation.FlowTab
+import io.github.aedev.flow.ui.components.shared.OpenTubeIslandHost
 import io.github.aedev.flow.ui.components.layout.navigation.NavigationVisibility
 import io.github.aedev.flow.ui.components.layout.navigation.flowUsesNavigationRail
 import io.github.aedev.flow.ui.components.layout.navigation.rememberFlowNavigationScrollState
@@ -126,6 +129,7 @@ fun FlowApp(
     val subscriptionRefreshOnStartup by preferences.subscriptionRefreshOnStartup.collectAsState(initial = false)
     val bottomNavHideOnScroll by preferences.bottomNavHideOnScroll.collectAsState(initial = true)
     val bottomNavLook by preferences.bottomNavLook.collectAsState(initial = NavBarLook())
+    val pageTransitionStyle by preferences.pageTransitionStyle.collectAsState(initial = PageTransitionStyle.SLIDE)
     val searchShowsNavBar by preferences.searchShowsNavBar.collectAsState(initial = false)
     val innerPagesShowNavBar by preferences.innerPagesShowNavBar.collectAsState(initial = false)
     val sleepTimerCloseAppOnExpiry by preferences.sleepTimerCloseAppOnExpiry.collectAsState(
@@ -468,37 +472,39 @@ fun FlowApp(
                                     LocalFlowSnackbarHostState provides snackbarHostState,
                                     LocalStatusBarHero provides statusBarHero,
                                 ) {
-                                    if (needsOnboarding == false) SubscriptionBellAlerts(snackbarHostState)
-                                    LinkedSyncAlerts(snackbarHostState)
-                                    SwitchRefusals(profileSwitchViewModel)
-                                    PlayOnHost(onManageDevices = { mediaNavigator.openSettings(SettingsTarget(SettingsDestination.SYNC)) })
-                                    NavHost(
-                                        navController = navController,
-                                        startDestination = if (needsOnboarding == true) "onboarding" else defaultStartRoute,
-                                        enterTransition = FlowNavTransitions.enter,
-                                        exitTransition = FlowNavTransitions.exit,
-                                        popEnterTransition = FlowNavTransitions.popEnter,
-                                        popExitTransition = FlowNavTransitions.popExit,
-                                        predictivePopEnterTransition = FlowNavTransitions.predictivePopEnter,
-                                        predictivePopExitTransition = FlowNavTransitions.predictivePopExit,
-                                    ) {
-                                        flowAppGraph(
+                                    Box(modifier = Modifier.fillMaxSize()) {
+                                        if (needsOnboarding == false) SubscriptionBellAlerts(snackbarHostState)
+                                        LinkedSyncAlerts(snackbarHostState)
+                                        SwitchRefusals(profileSwitchViewModel)
+                                        PlayOnHost(onManageDevices = { mediaNavigator.openSettings(SettingsTarget(SettingsDestination.SYNC)) })
+                                        NavHost(
                                             navController = navController,
-                                            mediaNavigator = mediaNavigator,
-                                            currentRoute = currentRoute,
-                                            playerSheetState = playerSheetState,
-                                            musicPlayerSheetState = musicPlayerSheetState,
-                                            homeViewModel = homeViewModel,
-                                            playerViewModel = playerViewModel,
-                                            playerUiStateResult = playerUiStateResult,
-                                            playerVisibleState = playerVisibleState,
-                                            disableShortsPlayer = disableShortsPlayer,
-                                            defaultStartRoute = defaultStartRoute,
-                                            onMusicStarted = onMusicStarted,
-                                            openDownloads = openDownloads,
-                                            searchExitTab = { exitTab(currentNavigationTabs, FlowTab.Search) },
-                                            searchIsTab = { FlowTab.Search in currentNavigationTabs },
-                                        )
+                                            startDestination = if (needsOnboarding == true) "onboarding" else defaultStartRoute,
+                                            enterTransition = remember(pageTransitionStyle) { FlowNavTransitions.enter(pageTransitionStyle) },
+                                            exitTransition = remember(pageTransitionStyle) { FlowNavTransitions.exit(pageTransitionStyle) },
+                                            popEnterTransition = remember(pageTransitionStyle) { FlowNavTransitions.popEnter(pageTransitionStyle) },
+                                            popExitTransition = remember(pageTransitionStyle) { FlowNavTransitions.popExit(pageTransitionStyle) },
+                                            predictivePopEnterTransition = FlowNavTransitions.predictivePopEnter,
+                                            predictivePopExitTransition = FlowNavTransitions.predictivePopExit,
+                                        ) {
+                                            flowAppGraph(
+                                                navController = navController,
+                                                mediaNavigator = mediaNavigator,
+                                                currentRoute = currentRoute,
+                                                playerSheetState = playerSheetState,
+                                                musicPlayerSheetState = musicPlayerSheetState,
+                                                homeViewModel = homeViewModel,
+                                                playerViewModel = playerViewModel,
+                                                playerUiStateResult = playerUiStateResult,
+                                                playerVisibleState = playerVisibleState,
+                                                disableShortsPlayer = disableShortsPlayer,
+                                                defaultStartRoute = defaultStartRoute,
+                                                onMusicStarted = onMusicStarted,
+                                                openDownloads = openDownloads,
+                                                searchExitTab = { exitTab(currentNavigationTabs, FlowTab.Search) },
+                                                searchIsTab = { FlowTab.Search in currentNavigationTabs },
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -543,6 +549,14 @@ fun FlowApp(
             bottomInsets = bottomInsets,
             openOrigins = mediaOpenOrigins,
             snackbarHostState = snackbarHostState,
+        )
+
+        OpenTubeIslandHost(
+            isMusicPlayerExpanded = musicPlayerSheetState.isExpanded,
+            isVideoPlayerExpanded = playerSheetState.currentValue == PlayerSheetValue.Expanded,
+            onExpandMusicPlayer = { musicPlayerSheetState.expand() },
+            onExpandVideoPlayer = { playerSheetState.expand() },
+            modifier = Modifier.align(Alignment.TopCenter),
         )
 
         androidx.compose.material3.SnackbarHost(

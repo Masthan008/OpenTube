@@ -154,6 +154,24 @@ internal object AppearanceIndex {
             section = R.string.settings_section_style,
             destination = page,
         )
+    val openingAnimation =
+        SettingEntry(
+            key = "appearance.opening_animation",
+            title = R.string.settings_opening_animation_title,
+            summary = R.string.settings_opening_animation_summary,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+        )
+    val originIsland =
+        SettingEntry(
+            key = "appearance.origin_island",
+            title = R.string.player_appearance_origin_island_title,
+            summary = R.string.player_appearance_origin_island_subtitle,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+        )
     val haptics =
         SettingEntry(
             key = "appearance.haptics",
@@ -196,6 +214,8 @@ internal object AppearanceIndex {
             skeletonGradient,
             marquee,
             classicLoadingIndicator,
+            openingAnimation,
+            originIsland,
             haptics,
             hapticsIgnoreSystem,
             highlightNewSettings,
@@ -313,6 +333,55 @@ internal object NavigationBarIndex {
             destination = page,
             revealVia = style.key,
         )
+    val dockMotion =
+        SettingEntry(
+            key = "navigation_bar.dock_motion",
+            title = R.string.settings_nav_dock_motion_title,
+            summary = R.string.settings_nav_dock_motion_summary,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+            revealVia = style.key,
+        )
+    val dockLens =
+        SettingEntry(
+            key = "navigation_bar.dock_lens",
+            title = R.string.settings_nav_dock_lens_title,
+            summary = R.string.settings_nav_dock_lens_summary,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+            revealVia = style.key,
+        )
+    val glassStyle =
+        SettingEntry(
+            key = "navigation_bar.glass_style",
+            title = R.string.settings_glass_style_title,
+            summary = R.string.settings_glass_style_summary,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+            revealVia = style.key,
+        )
+    val reduceBlur =
+        SettingEntry(
+            key = "navigation_bar.reduce_blur",
+            title = R.string.settings_reduce_blur_title,
+            summary = R.string.settings_reduce_blur_summary,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+            revealVia = style.key,
+        )
+    val pageTransition =
+        SettingEntry(
+            key = "navigation_bar.page_transition",
+            title = R.string.settings_page_transition_title,
+            summary = R.string.settings_page_transition_summary,
+            keywords = R.string.settings_keywords_nav_style,
+            section = R.string.settings_section_style,
+            destination = page,
+        )
     val showOnOtherPages =
         SettingEntry(
             key = "navigation_bar.show_on_other_pages",
@@ -339,6 +408,11 @@ internal object NavigationBarIndex {
             miniBeside,
             scrub,
             iconPop,
+            dockMotion,
+            dockLens,
+            glassStyle,
+            reduceBlur,
+            pageTransition,
             home,
             shorts,
             music,

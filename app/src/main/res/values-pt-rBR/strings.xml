@@ -375,7 +375,7 @@
     <string name="settings_item_search_history_subtitle">Limpar histórico, gerenciar sugestões</string>
     <string name="settings_item_time_management">Gerenciamento de Tempo</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Versão, Licença, Colaboradores</string>
+    <string name="settings_item_about_flow_subtitle">Versão, licenças e links</string>
     <string name="settings_item_support">Apoio &amp; Doações</string>
     <string name="settings_item_support_subtitle">Apoie o desenvolvimento do OpenTube</string>
     <string name="settings_region_dialog_title">Selecione a Região</string>

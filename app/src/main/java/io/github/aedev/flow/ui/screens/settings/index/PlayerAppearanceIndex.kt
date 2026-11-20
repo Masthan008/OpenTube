@@ -177,6 +177,13 @@ internal object PlayerAppearanceIndex {
             R.string.player_appearance_cover_ring_subtitle,
             R.string.settings_section_music_mini_player,
         )
+    val originIsland =
+        entry(
+            "origin_island",
+            R.string.player_appearance_origin_island_title,
+            R.string.player_appearance_origin_island_subtitle,
+            R.string.settings_section_music_mini_player,
+        )
     val miniBackground =
         entry(
             "mini_background",

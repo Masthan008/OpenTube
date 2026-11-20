@@ -59,6 +59,7 @@ object SleepTimerManager {
     private var pauseCallback: (() -> Unit)? = null
     private var exitCallback: (() -> Unit)? = null
     private var currentPlayer: Player? = null
+    private var originalVolume: Float = 1f
 
     private val playerListener =
         object : Player.Listener {
@@ -94,11 +95,13 @@ object SleepTimerManager {
         currentPlayer?.removeListener(playerListener)
         currentPlayer = player
         pauseCallback = pauseFn
+        originalVolume = player?.volume ?: 1f
         player?.addListener(playerListener)
     }
 
     /** Detach the current player without cancelling the timer. */
     fun detachPlayer() {
+        currentPlayer?.volume = originalVolume
         currentPlayer?.removeListener(playerListener)
         currentPlayer = null
     }
@@ -109,7 +112,7 @@ object SleepTimerManager {
     }
 
     /**
-     * Start a countdown timer.
+     * Start a countdown timer with gentle 30-second volume fade-out before pausing.
      *
      * @param minutes  Duration in minutes, must be > 0.
      */
@@ -120,13 +123,39 @@ object SleepTimerManager {
         require(minutes > 0) { "minutes must be positive" }
         clearState()
         closeAppOnExpiry = closeApp
-        triggerTimeMs = System.currentTimeMillis() + minutes * 60_000L
+        val totalMs = minutes * 60_000L
+        triggerTimeMs = System.currentTimeMillis() + totalMs
         isActive = true
+        originalVolume = currentPlayer?.volume ?: 1f
         timerJob =
             scope.launch {
-                delay(minutes * 60_000L)
+                val fadeDurationMs = 30_000L.coerceAtMost(totalMs / 2)
+                val initialDelay = (totalMs - fadeDurationMs).coerceAtLeast(0L)
+                if (initialDelay > 0) {
+                    delay(initialDelay)
+                }
+                // Gentle fade-out over final seconds so sleep is undisturbed
+                val player = currentPlayer
+                if (player != null && fadeDurationMs > 0) {
+                    val steps = 15
+                    val stepDelay = fadeDurationMs / steps
+                    for (step in (steps - 1) downTo 0) {
+                        val fraction = step.toFloat() / steps.toFloat()
+                        player.volume = originalVolume * fraction
+                        delay(stepDelay)
+                    }
+                }
                 firePause()
             }
+    }
+
+    /** Extend active sleep timer by [additionalMinutes] (e.g. 10 or 15 minutes) */
+    fun extend(additionalMinutes: Int) {
+        if (!isActive || triggerTimeMs <= 0) return
+        val remaining = (triggerTimeMs - System.currentTimeMillis()).coerceAtLeast(0L)
+        val newDurationMs = remaining + additionalMinutes * 60_000L
+        val newMinutes = ((newDurationMs + 59_999L) / 60_000L).toInt().coerceAtLeast(1)
+        start(newMinutes, closeAppOnExpiry)
     }
 
     /** Start end-of-media mode — player pauses (or closes the app) when the current item ends. */
@@ -152,6 +181,7 @@ object SleepTimerManager {
         val message = if (closeAppOnExpiry) "sleep timer closed the app" else "sleep timer paused playback"
         Log.w(TAG, message)
         PlayerDiagnostics.logWarning(TAG, message)
+        currentPlayer?.volume = originalVolume
         if (closeAppOnExpiry) exitCallback?.invoke() else pauseCallback?.invoke()
         cancel()
     }
@@ -159,6 +189,7 @@ object SleepTimerManager {
     private fun clearState() {
         timerJob?.cancel()
         timerJob = null
+        currentPlayer?.volume = originalVolume
         pauseAtEndOfMedia = false
         closeAppOnExpiry = false
         triggerTimeMs = -1L

@@ -12,6 +12,14 @@ import io.github.aedev.flow.data.local.LyricsGlow
 @StringRes
 internal fun lyricsAnimationLabel(style: LyricsAnimationStyle): Int =
     when (style) {
+        LyricsAnimationStyle.FLUID -> R.string.settings_lyrics_animation_fluid
+        LyricsAnimationStyle.KARAOKE -> R.string.settings_lyrics_animation_karaoke
+        LyricsAnimationStyle.ZOOM -> R.string.settings_lyrics_animation_zoom
+        LyricsAnimationStyle.GLOW -> R.string.settings_lyrics_animation_glow
+        LyricsAnimationStyle.KINETIC -> R.string.settings_lyrics_animation_kinetic
+        LyricsAnimationStyle.SPOTLIGHT -> R.string.settings_lyrics_animation_spotlight
+        LyricsAnimationStyle.CASCADE -> R.string.settings_lyrics_animation_cascade
+        LyricsAnimationStyle.MINIMAL -> R.string.settings_lyrics_animation_minimal
         LyricsAnimationStyle.CADENCE -> R.string.lyrics_animation_cadence
         LyricsAnimationStyle.CLASSIC -> R.string.lyrics_animation_classic
         LyricsAnimationStyle.CALM -> R.string.lyrics_animation_calm
@@ -20,6 +28,14 @@ internal fun lyricsAnimationLabel(style: LyricsAnimationStyle): Int =
 @StringRes
 internal fun lyricsAnimationDetail(style: LyricsAnimationStyle): Int =
     when (style) {
+        LyricsAnimationStyle.FLUID -> R.string.settings_lyrics_animation_fluid
+        LyricsAnimationStyle.KARAOKE -> R.string.settings_lyrics_animation_karaoke
+        LyricsAnimationStyle.ZOOM -> R.string.settings_lyrics_animation_zoom
+        LyricsAnimationStyle.GLOW -> R.string.settings_lyrics_animation_glow
+        LyricsAnimationStyle.KINETIC -> R.string.settings_lyrics_animation_kinetic
+        LyricsAnimationStyle.SPOTLIGHT -> R.string.settings_lyrics_animation_spotlight
+        LyricsAnimationStyle.CASCADE -> R.string.settings_lyrics_animation_cascade
+        LyricsAnimationStyle.MINIMAL -> R.string.settings_lyrics_animation_minimal
         LyricsAnimationStyle.CADENCE -> R.string.lyrics_animation_cadence_detail
         LyricsAnimationStyle.CLASSIC -> R.string.lyrics_animation_classic_detail
         LyricsAnimationStyle.CALM -> R.string.lyrics_animation_calm_detail

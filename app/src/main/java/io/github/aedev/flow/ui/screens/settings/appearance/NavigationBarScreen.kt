@@ -24,9 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.aedev.flow.R
+import io.github.aedev.flow.data.local.DockLens
+import io.github.aedev.flow.data.local.DockMotion
+import io.github.aedev.flow.data.local.GlassStyle
 import io.github.aedev.flow.data.local.NavBarLabels
 import io.github.aedev.flow.data.local.NavBarScroll
 import io.github.aedev.flow.data.local.NavBarStyle
+import io.github.aedev.flow.data.local.PageTransitionStyle
 import io.github.aedev.flow.ui.components.layout.navigation.resolveDefaultFlowTab
 import io.github.aedev.flow.ui.components.layout.navigation.visibleFlowTabs
 import io.github.aedev.flow.ui.components.settings.SettingsPage
@@ -51,6 +55,11 @@ internal fun NavigationBarScreen(
     val iconPop by viewModel.navIconPop.collectAsStateWithLifecycle()
     val scroll by viewModel.navScroll.collectAsStateWithLifecycle()
     val miniBeside by viewModel.navMiniBeside.collectAsStateWithLifecycle()
+    val dockMotion by viewModel.navDockMotion.collectAsStateWithLifecycle()
+    val dockLens by viewModel.navDockLens.collectAsStateWithLifecycle()
+    val glassStyle by viewModel.glassStyle.collectAsStateWithLifecycle()
+    val reduceBlur by viewModel.reduceBlur.collectAsStateWithLifecycle()
+    val pageTransition by viewModel.pageTransitionStyle.collectAsStateWithLifecycle()
     val searchShowsBar by viewModel.searchShowsNavBar.collectAsStateWithLifecycle()
     val innerPagesShowBar by viewModel.innerPagesShowNavBar.collectAsStateWithLifecycle()
     val order by viewModel.navTabOrder.collectAsStateWithLifecycle()
@@ -78,6 +87,40 @@ internal fun NavigationBarScreen(
             FlowToggleOption(NavBarScroll.SHRINK, stringResource(R.string.settings_nav_scroll_shrink)),
         )
 
+    val dockMotionOptions =
+        listOf(
+            FlowToggleOption(DockMotion.MINIMIZE, stringResource(R.string.settings_nav_dock_motion_minimize)),
+            FlowToggleOption(DockMotion.CAPSULE, stringResource(R.string.settings_nav_dock_motion_capsule)),
+            FlowToggleOption(DockMotion.SINK, stringResource(R.string.settings_nav_dock_motion_sink)),
+            FlowToggleOption(DockMotion.FLOAT, stringResource(R.string.settings_nav_dock_motion_float)),
+            FlowToggleOption(DockMotion.BOUNCE, stringResource(R.string.settings_nav_dock_motion_bounce)),
+        )
+
+    val dockLensOptions =
+        listOf(
+            FlowToggleOption(DockLens.STRETCH, stringResource(R.string.settings_nav_dock_lens_stretch)),
+            FlowToggleOption(DockLens.JELLY, stringResource(R.string.settings_nav_dock_lens_jelly)),
+            FlowToggleOption(DockLens.GLIDE, stringResource(R.string.settings_nav_dock_lens_glide)),
+        )
+
+    val glassStyleOptions =
+        listOf(
+            FlowToggleOption(GlassStyle.LIQUID, stringResource(R.string.settings_glass_style_liquid)),
+            FlowToggleOption(GlassStyle.FROSTED, stringResource(R.string.settings_glass_style_frosted)),
+            FlowToggleOption(GlassStyle.CLEAR, stringResource(R.string.settings_glass_style_clear)),
+            FlowToggleOption(GlassStyle.HEAVY, stringResource(R.string.settings_glass_style_heavy)),
+            FlowToggleOption(GlassStyle.TINTED, stringResource(R.string.settings_glass_style_tinted)),
+            FlowToggleOption(GlassStyle.SMOKE, stringResource(R.string.settings_glass_style_smoke)),
+        )
+
+    val pageTransitionOptions =
+        listOf(
+            FlowToggleOption(PageTransitionStyle.SLIDE, stringResource(R.string.settings_page_transition_slide)),
+            FlowToggleOption(PageTransitionStyle.FADE, stringResource(R.string.settings_page_transition_fade)),
+            FlowToggleOption(PageTransitionStyle.ZOOM, stringResource(R.string.settings_page_transition_zoom)),
+            FlowToggleOption(PageTransitionStyle.RISE, stringResource(R.string.settings_page_transition_rise)),
+        )
+
     SettingsPage(
         title = stringResource(R.string.settings_navigation_bar_title),
         onBack = onBack,
@@ -86,26 +129,68 @@ internal fun NavigationBarScreen(
         group(key = "navigation_bar.style", header = R.string.settings_section_style) {
             toggleGroup(NavigationBarIndex.style, styleOptions, style, viewModel::setNavStyle)
             toggleGroup(NavigationBarIndex.labels, labelOptions, labels, viewModel::setNavLabels)
-            if (style == NavBarStyle.FLOATING) {
-                toggleGroup(
-                    NavigationBarIndex.scroll,
-                    scrollOptions,
-                    scroll,
-                    viewModel::setNavScroll,
+            toggleGroup(
+                NavigationBarIndex.scroll,
+                scrollOptions,
+                scroll,
+                viewModel::setNavScroll,
+                enabled = hideOnScroll && style == NavBarStyle.FLOATING,
+            )
+            if (scroll == NavBarScroll.SHRINK && style == NavBarStyle.FLOATING) {
+                switch(
+                    NavigationBarIndex.miniBeside,
+                    miniBeside,
+                    viewModel::setNavMiniBeside,
                     enabled = hideOnScroll,
+                    icon = Icons.Outlined.PictureInPictureAlt,
                 )
-                if (scroll == NavBarScroll.SHRINK) {
-                    switch(
-                        NavigationBarIndex.miniBeside,
-                        miniBeside,
-                        viewModel::setNavMiniBeside,
-                        enabled = hideOnScroll,
-                        icon = Icons.Outlined.PictureInPictureAlt,
-                    )
-                }
-                switch(NavigationBarIndex.scrub, scrub, viewModel::setNavScrub, icon = Icons.Outlined.Swipe)
-                switch(NavigationBarIndex.iconPop, iconPop, viewModel::setNavIconPop, icon = Icons.Outlined.Animation)
             }
+            switch(
+                NavigationBarIndex.scrub,
+                scrub,
+                viewModel::setNavScrub,
+                enabled = style == NavBarStyle.FLOATING,
+                icon = Icons.Outlined.Swipe,
+            )
+            switch(
+                NavigationBarIndex.iconPop,
+                iconPop,
+                viewModel::setNavIconPop,
+                enabled = style == NavBarStyle.FLOATING,
+                icon = Icons.Outlined.Animation,
+            )
+        }
+        group(key = "navigation_bar.effects", header = R.string.settings_nav_dock_motion_title) {
+            toggleGroup(
+                NavigationBarIndex.dockMotion,
+                dockMotionOptions,
+                dockMotion,
+                viewModel::setNavDockMotion,
+                enabled = style == NavBarStyle.FLOATING,
+            )
+            toggleGroup(
+                NavigationBarIndex.dockLens,
+                dockLensOptions,
+                dockLens,
+                viewModel::setNavDockLens,
+                enabled = style == NavBarStyle.FLOATING,
+            )
+            toggleGroup(
+                NavigationBarIndex.glassStyle,
+                glassStyleOptions,
+                glassStyle,
+                viewModel::setGlassStyle,
+                enabled = style == NavBarStyle.FLOATING,
+            )
+            switch(NavigationBarIndex.reduceBlur, reduceBlur, viewModel::setReduceBlur)
+        }
+        group(key = "navigation_bar.motion", header = R.string.settings_page_transition_title) {
+            toggleGroup(
+                NavigationBarIndex.pageTransition,
+                pageTransitionOptions,
+                pageTransition,
+                viewModel::setPageTransitionStyle,
+            )
         }
         group(key = "navigation_bar.tabs", header = R.string.settings_section_tabs) {
             switch(NavigationBarIndex.home, visibility.home, viewModel::setHomeTab, icon = Icons.Outlined.Home)

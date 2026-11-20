@@ -110,7 +110,7 @@
     <string name="settings_item_export_data">Ekspor Data</string>
     <string name="settings_item_import_data">Impor Data</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Versi, Lisensi, Kontributor</string>
+    <string name="settings_item_about_flow_subtitle">Versi, lisensi, dan tautan</string>
     <string name="settings_item_support">Dukungan &amp; Donasi</string>
     <string name="settings_item_support_subtitle">Bantu dukung pengembangan OpenTube</string>
     <string name="settings_export_success">Data berhasil diekspor</string>

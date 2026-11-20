@@ -41,6 +41,7 @@ import io.github.aedev.flow.ui.components.settings.switch
 import io.github.aedev.flow.ui.components.settings.toggleGroup
 import io.github.aedev.flow.ui.components.shared.FlowToggleOption
 import io.github.aedev.flow.ui.components.shared.MediaMiniBarDefaults
+import io.github.aedev.flow.ui.components.shared.OpenTubeIslandPreview
 import io.github.aedev.flow.ui.screens.settings.index.PlayerAppearanceIndex
 
 internal enum class MusicMiniSheet { COVER_SHAPES, COVER_PAUSED, BAR_PROGRESS, BUTTONS, BACKGROUND }
@@ -139,6 +140,20 @@ internal fun SettingsListScope.musicMiniGroup(
         onClick = { settings.sheet = MusicMiniSheet.BAR_PROGRESS },
     )
     switch(PlayerAppearanceIndex.miniCoverRing, viewModel.miniCoverRing, viewModel::setMiniCoverRing)
+    switch(PlayerAppearanceIndex.originIsland, viewModel.originIslandEnabled, viewModel::setOriginIslandEnabled)
+    if (viewModel.originIslandEnabled.value) {
+        row("origin_island_preview") {
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                OpenTubeIslandPreview()
+            }
+        }
+    }
     nav(PlayerAppearanceIndex.miniBackground, value = settings.backgroundLabel, onClick = { settings.sheet = MusicMiniSheet.BACKGROUND })
     nav(PlayerAppearanceIndex.miniButtons, value = settings.buttonsLabel, onClick = { settings.sheet = MusicMiniSheet.BUTTONS })
     toggleGroup(PlayerAppearanceIndex.miniCoverTap, settings.coverTapOptions, viewModel.miniCoverTap, viewModel::setMiniCoverTap)

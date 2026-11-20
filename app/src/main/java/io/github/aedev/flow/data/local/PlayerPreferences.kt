@@ -191,6 +191,13 @@ class PlayerPreferences(
         val BOTTOM_NAV_ICON_POP = booleanPreferencesKey("bottom_nav_icon_pop")
         val BOTTOM_NAV_SCROLL = stringPreferencesKey("bottom_nav_scroll")
         val BOTTOM_NAV_MINI_BESIDE = booleanPreferencesKey("bottom_nav_mini_beside")
+        val BOTTOM_NAV_DOCK_MOTION = stringPreferencesKey("bottom_nav_dock_motion")
+        val BOTTOM_NAV_DOCK_LENS = stringPreferencesKey("bottom_nav_dock_lens")
+        val GLASS_STYLE = stringPreferencesKey("glass_style")
+        val REDUCE_BLUR = booleanPreferencesKey("reduce_blur")
+        val OPENING_ANIMATION = booleanPreferencesKey("opening_animation")
+        val ORIGIN_ISLAND_ENABLED = booleanPreferencesKey("origin_island_enabled")
+        val PAGE_TRANSITION_STYLE = stringPreferencesKey("page_transition_style")
         val SEARCH_SHOWS_NAV_BAR = booleanPreferencesKey("search_shows_nav_bar")
         val INNER_PAGES_SHOW_NAV_BAR = booleanPreferencesKey("inner_pages_show_nav_bar")
         val MUSIC_NAVIGATION_ENABLED = booleanPreferencesKey("music_navigation_enabled")
@@ -1710,7 +1717,7 @@ class PlayerPreferences(
             .map { preferences ->
                 preferences[Keys.BOTTOM_NAV_STYLE]
                     ?.let { stored -> runCatching { NavBarStyle.valueOf(stored) }.getOrNull() }
-                    ?: NavBarStyle.STANDARD
+                    ?: NavBarStyle.FLOATING
             }.distinctUntilChanged()
 
     suspend fun setBottomNavStyle(style: NavBarStyle) {
@@ -1768,6 +1775,95 @@ class PlayerPreferences(
         }
     }
 
+    val bottomNavDockMotion: Flow<DockMotion> =
+        context.playerPreferencesDataStore.data
+            .map { preferences ->
+                runCatching {
+                    DockMotion.valueOf(preferences[Keys.BOTTOM_NAV_DOCK_MOTION] ?: DockMotion.MINIMIZE.name)
+                }.getOrDefault(DockMotion.MINIMIZE)
+            }.distinctUntilChanged()
+
+    suspend fun setBottomNavDockMotion(motion: DockMotion) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.BOTTOM_NAV_DOCK_MOTION] = motion.name
+        }
+    }
+
+    val bottomNavDockLens: Flow<DockLens> =
+        context.playerPreferencesDataStore.data
+            .map { preferences ->
+                runCatching {
+                    DockLens.valueOf(preferences[Keys.BOTTOM_NAV_DOCK_LENS] ?: DockLens.STRETCH.name)
+                }.getOrDefault(DockLens.STRETCH)
+            }.distinctUntilChanged()
+
+    suspend fun setBottomNavDockLens(lens: DockLens) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.BOTTOM_NAV_DOCK_LENS] = lens.name
+        }
+    }
+
+    val glassStyle: Flow<GlassStyle> =
+        context.playerPreferencesDataStore.data
+            .map { preferences ->
+                runCatching {
+                    GlassStyle.valueOf(preferences[Keys.GLASS_STYLE] ?: GlassStyle.LIQUID.name)
+                }.getOrDefault(GlassStyle.LIQUID)
+            }.distinctUntilChanged()
+
+    suspend fun setGlassStyle(style: GlassStyle) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.GLASS_STYLE] = style.name
+        }
+    }
+
+    val reduceBlur: Flow<Boolean> =
+        context.playerPreferencesDataStore.data
+            .map { preferences -> preferences[Keys.REDUCE_BLUR] ?: false }
+            .distinctUntilChanged()
+
+    suspend fun setReduceBlur(enabled: Boolean) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.REDUCE_BLUR] = enabled
+        }
+    }
+
+    val pageTransitionStyle: Flow<PageTransitionStyle> =
+        context.playerPreferencesDataStore.data
+            .map { preferences ->
+                runCatching {
+                    PageTransitionStyle.valueOf(preferences[Keys.PAGE_TRANSITION_STYLE] ?: PageTransitionStyle.SLIDE.name)
+                }.getOrDefault(PageTransitionStyle.SLIDE)
+            }.distinctUntilChanged()
+
+    suspend fun setPageTransitionStyle(style: PageTransitionStyle) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.PAGE_TRANSITION_STYLE] = style.name
+        }
+    }
+
+    val openingAnimation: Flow<Boolean> =
+        context.playerPreferencesDataStore.data
+            .map { preferences -> preferences[Keys.OPENING_ANIMATION] ?: true }
+            .distinctUntilChanged()
+
+    suspend fun setOpeningAnimation(enabled: Boolean) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.OPENING_ANIMATION] = enabled
+        }
+    }
+
+    val originIslandEnabled: Flow<Boolean> =
+        context.playerPreferencesDataStore.data
+            .map { preferences -> preferences[Keys.ORIGIN_ISLAND_ENABLED] ?: true }
+            .distinctUntilChanged()
+
+    suspend fun setOriginIslandEnabled(enabled: Boolean) {
+        context.playerPreferencesDataStore.edit { preferences ->
+            preferences[Keys.ORIGIN_ISLAND_ENABLED] = enabled
+        }
+    }
+
     val bottomNavLook: Flow<NavBarLook> =
         combine(
             bottomNavStyle,
@@ -1777,8 +1873,15 @@ class PlayerPreferences(
             bottomNavScroll,
         ) { style, labels, scrub, iconPop, scroll ->
             NavBarLook(style, labels, scrub, iconPop, scroll)
-        }.combine(bottomNavMiniBeside) { look, miniBeside -> look.copy(miniBeside = miniBeside) }
-            .distinctUntilChanged()
+        }.combine(bottomNavMiniBeside) { look, miniBeside ->
+            look.copy(miniBeside = miniBeside)
+        }.combine(bottomNavDockMotion) { look, motion ->
+            look.copy(dockMotion = motion)
+        }.combine(bottomNavDockLens) { look, lens ->
+            look.copy(dockLens = lens)
+        }.combine(glassStyle) { look, glass ->
+            look.copy(glassStyle = glass)
+        }.distinctUntilChanged()
 
     // Search keeps its full-screen layout unless this is on.
     val searchShowsNavBar: Flow<Boolean> =
@@ -4959,9 +5062,9 @@ class PlayerPreferences(
 
     val lyricsAnimationStyle: Flow<LyricsAnimationStyle> =
         context.playerPreferencesDataStore.data.map { preferences ->
-            runCatching { LyricsAnimationStyle.valueOf(preferences[Keys.LYRICS_ANIMATION_STYLE] ?: LyricsAnimationStyle.CADENCE.name) }
-                .getOrDefault(LyricsAnimationStyle.CADENCE)
-        }
+            runCatching { LyricsAnimationStyle.valueOf(preferences[Keys.LYRICS_ANIMATION_STYLE] ?: LyricsAnimationStyle.FLUID.name) }
+                .getOrDefault(LyricsAnimationStyle.FLUID)
+        }.distinctUntilChanged()
 
     suspend fun setLyricsAnimationStyle(style: LyricsAnimationStyle) {
         context.playerPreferencesDataStore.edit { it[Keys.LYRICS_ANIMATION_STYLE] = style.name }
@@ -5591,6 +5694,8 @@ enum class MiniBarBackground {
     COVER_COLOURS,
     BLACK,
     OUTLINED,
+    LIQUID_GLASS,
+    FROSTED_GLASS,
 }
 
 /**
@@ -5664,6 +5769,14 @@ enum class MiniCoverMotion {
  * Stored by name.
  */
 enum class LyricsAnimationStyle {
+    FLUID,
+    KARAOKE,
+    ZOOM,
+    GLOW,
+    KINETIC,
+    SPOTLIGHT,
+    CASCADE,
+    MINIMAL,
     CADENCE,
     CLASSIC,
     CALM,
@@ -5897,13 +6010,50 @@ enum class NavBarStyle {
     FLOATING,
 }
 
+/** How the dock tucks away or moves as content scrolls. */
+enum class DockMotion {
+    MINIMIZE,
+    CAPSULE,
+    SINK,
+    FLOAT,
+    BOUNCE,
+}
+
+/** How the dock's highlight indicator travels between tabs. */
+enum class DockLens {
+    STRETCH,
+    JELLY,
+    GLIDE,
+}
+
+/** The glass styling applied to floating surfaces. */
+enum class GlassStyle {
+    LIQUID,
+    FROSTED,
+    CLEAR,
+    HEAVY,
+    TINTED,
+    SMOKE,
+}
+
+/** How pages transition between destinations. */
+enum class PageTransitionStyle {
+    SLIDE,
+    FADE,
+    ZOOM,
+    RISE,
+}
+
 data class NavBarLook(
-    val style: NavBarStyle = NavBarStyle.STANDARD,
+    val style: NavBarStyle = NavBarStyle.FLOATING,
     val labels: NavBarLabels = NavBarLabels.ALWAYS,
     val scrub: Boolean = true,
     val iconPop: Boolean = false,
     val scroll: NavBarScroll = NavBarScroll.SHRINK,
     val miniBeside: Boolean = false,
+    val dockMotion: DockMotion = DockMotion.MINIMIZE,
+    val dockLens: DockLens = DockLens.STRETCH,
+    val glassStyle: GlassStyle = GlassStyle.LIQUID,
 )
 
 /** What scrolling does to the floating bar, when the bar reacts to scrolling at all. */

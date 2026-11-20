@@ -332,7 +332,7 @@
     <string name="settings_item_import_data">डेटा आयात करें</string>
     <string name="settings_item_import_data_subtitle">बैकअप से पुनर्स्थापित करें या अन्य ऐप्स से आयात करें</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">संस्करण, लाइसेंस, योगदानकर्ता</string>
+    <string name="settings_item_about_flow_subtitle">संस्करण, लाइसेंस और लिंक</string>
     <string name="settings_item_support">सहायता और दान</string>
     <string name="settings_item_support_subtitle">OpenTube के विकास में सहायता करें</string>
     <string name="settings_region_dialog_title">क्षेत्र चुनें</string>

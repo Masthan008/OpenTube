@@ -772,7 +772,7 @@
     <string name="settings_item_import_data">ਡਾਟਾ ਆਯਾਤ ਕਰੋ</string>
     <string name="settings_item_import_data_subtitle">ਬੈਕਅੱਪ ਤੋਂ ਰੀਸਟੋਰ ਕਰੋ ਜਾਂ ਹੋਰ ਐਪਸ ਤੋਂ ਆਯਾਤ ਕਰੋ</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">ਸੰਸਕਰਣ, ਲਾਇਸੈਂਸ, ਯੋਗਦਾਨੀ</string>
+    <string name="settings_item_about_flow_subtitle">ਸੰਸਕਰਣ, ਲਾਇਸੰਸ ਅਤੇ ਲਿੰਕ</string>
     <string name="settings_item_support">ਸਹਾਇਤਾ ਅਤੇ ਦਾਨ</string>
     <string name="settings_item_support_subtitle">OpenTube ਦੇ ਵਿਕਾਸ ਦਾ ਸਮਰਥਨ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰੋ</string>
     <string name="settings_region_dialog_title">ਖੇਤਰ ਚੁਣੋ</string>

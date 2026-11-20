@@ -476,7 +476,7 @@
     <string name="settings_item_import_data">데이터 가져오기</string>
     <string name="settings_item_import_data_subtitle">백업을 복원하거나 다른 앱에서 가져옵니다</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">버전, 라이선스, 기여자</string>
+    <string name="settings_item_about_flow_subtitle">버전, 라이센스 및 링크</string>
     <string name="settings_item_support">후원 및 기부</string>
     <string name="settings_item_support_subtitle">OpenTube 개발을 후원합니다</string>
     <string name="settings_region_dialog_title">지역 선택</string>

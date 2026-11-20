@@ -12,12 +12,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusTarget
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -42,6 +44,8 @@ import io.github.aedev.flow.ui.IncomingLinks
 import io.github.aedev.flow.ui.components.applock.AppLockScreen
 import io.github.aedev.flow.ui.components.profiles.ProfileSwitchingOverlay
 import io.github.aedev.flow.ui.components.shared.AppHaptics
+import io.github.aedev.flow.ui.components.shared.OpenTubeOpening
+import io.github.aedev.flow.ui.components.shared.OpenTubeOpeningReveal
 import io.github.aedev.flow.ui.components.shared.ProvideChannelGroupLabels
 import io.github.aedev.flow.ui.components.shared.ProvideChannelOrganizer
 import io.github.aedev.flow.ui.components.shared.ProvideDateDisplaySettings
@@ -129,6 +133,18 @@ internal fun FlowRoot(
         val selectedIcon by appIconController.selected.collectAsState(initial = null)
         LaunchedEffect(splashTone, selectedIcon) { splashController.rememberTheme(splashTone, appIconController.activeSuffix()) }
 
+        val playerPreferences = remember(applicationContext) { PlayerPreferences(applicationContext) }
+        val openingEnabled by playerPreferences.openingAnimation.collectAsState(initial = true)
+        var opening by remember { mutableStateOf(!OpenTubeOpening.played && openingEnabled) }
+        var diveScale by remember { mutableFloatStateOf(if (opening) 1.14f else 1.0f) }
+
+        LaunchedEffect(opening) {
+            if (opening) {
+                // Immediately take over from the system splash screen
+                splashController.contentReady = true
+            }
+        }
+
         // Date preferences: five DataStore flows used to be opened per video card,
         // metadata line, info section, description sheet and info dialog.
         AppHaptics(enabled = hapticsEnabled, ignoreSystemSetting = hapticsIgnoreSystem) {
@@ -146,7 +162,15 @@ internal fun FlowRoot(
                         ) {
                             // PiP shows only what is already playing, so the lock waits for the full app.
                             val showLock = locked && !isInPip
-                            Box(Modifier.fillMaxSize().hiddenBehindLock(showLock)) {
+                            Box(
+                                Modifier
+                                    .fillMaxSize()
+                                    .hiddenBehindLock(showLock)
+                                    .graphicsLayer {
+                                        scaleX = diveScale
+                                        scaleY = diveScale
+                                    },
+                            ) {
                                 if (appUiRoot == AppUiRoot.MOBILE) PreAndroid9FocusHolder()
                                 // 1. MAIN APP (Home/NavHost)
                                 // This loads *behind* the splash screen immediately.
@@ -206,6 +230,19 @@ internal fun FlowRoot(
                                 )
                             }
                             if (showLock) AppLockScreen(appLock)
+
+                            if (opening) {
+                                OpenTubeOpeningReveal(
+                                    onDive = { p ->
+                                        diveScale = 1.14f - 0.14f * (1f - (1f - p) * (1f - p))
+                                    },
+                                    onDone = {
+                                        OpenTubeOpening.played = true
+                                        opening = false
+                                        diveScale = 1.0f
+                                    },
+                                )
+                            }
                         }
                     }
                 }

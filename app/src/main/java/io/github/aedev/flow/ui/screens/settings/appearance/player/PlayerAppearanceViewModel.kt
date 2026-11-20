@@ -63,6 +63,7 @@ class PlayerAppearanceViewModel
         val miniCoverShapes = preferences.miniCoverShapes.asState(DefaultCoverShapes)
         val miniCoverPausedShape = preferences.miniCoverPausedShape.asState(CoverShape.CIRCLE)
         val miniBarProgress = preferences.miniBarProgress.asState(MiniBarProgress.NONE)
+        val originIslandEnabled = preferences.originIslandEnabled.asState(true)
         val miniCoverRing = preferences.miniCoverRing.asState(true)
         val miniBarButtons = preferences.miniBarButtons.asState(DefaultMiniBarButtons)
         val miniCoverTap = preferences.miniCoverTap.asState(MiniCoverTap.OPEN)
@@ -145,6 +146,8 @@ class PlayerAppearanceViewModel
         fun setMiniCoverPausedShape(shape: CoverShape?) = write { preferences.setMiniCoverPausedShape(shape) }
 
         fun setMiniBarProgress(value: MiniBarProgress) = write { preferences.setMiniBarProgress(value) }
+
+        fun setOriginIslandEnabled(value: Boolean) = write { preferences.setOriginIslandEnabled(value) }
 
         fun setMiniCoverRing(value: Boolean) = write { preferences.setMiniCoverRing(value) }
 

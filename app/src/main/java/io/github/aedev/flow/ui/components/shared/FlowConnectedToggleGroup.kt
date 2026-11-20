@@ -1,6 +1,7 @@
 package io.github.aedev.flow.ui.components.shared
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -51,39 +52,85 @@ fun <T> FlowConnectedToggleGroup(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: ToggleButtonColors = ToggleButtonDefaults.colors(),
+    columns: Int = if (options.size > 4) 3 else if (options.size == 4) 2 else options.size,
 ) {
     val haptics = LocalHapticFeedback.current
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-    ) {
-        options.forEachIndexed { index, option ->
-            ToggleButton(
-                checked = option.value == selected,
-                enabled = enabled,
-                onCheckedChange = {
-                    haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
-                    onSelected(option.value)
-                },
-                shapes = connectedButtonShapes(index = index, count = options.size),
-                colors = colors,
-                contentPadding = ContentPadding,
-                modifier = Modifier.weight(1f),
-            ) {
-                if (option.icon != null) {
-                    Icon(
-                        imageVector = option.icon,
-                        contentDescription = null,
-                        modifier = Modifier.size(IconSize),
+    if (options.size <= 3) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+        ) {
+            options.forEachIndexed { index, option ->
+                ToggleButton(
+                    checked = option.value == selected,
+                    enabled = enabled,
+                    onCheckedChange = {
+                        haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                        onSelected(option.value)
+                    },
+                    shapes = connectedButtonShapes(index = index, count = options.size),
+                    colors = colors,
+                    contentPadding = ContentPadding,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    if (option.icon != null) {
+                        Icon(
+                            imageVector = option.icon,
+                            contentDescription = null,
+                            modifier = Modifier.size(IconSize),
+                        )
+                        Spacer(modifier = Modifier.width(IconSpacing))
+                    }
+                    Text(
+                        text = option.label,
+                        style = MaterialTheme.typography.labelLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
-                    Spacer(modifier = Modifier.width(IconSpacing))
                 }
-                Text(
-                    text = option.label,
-                    style = MaterialTheme.typography.labelLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+            }
+        }
+    } else {
+        val rows = options.chunked(columns)
+        Column(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            rows.forEach { rowOptions ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                ) {
+                    rowOptions.forEachIndexed { index, option ->
+                        ToggleButton(
+                            checked = option.value == selected,
+                            enabled = enabled,
+                            onCheckedChange = {
+                                haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                                onSelected(option.value)
+                            },
+                            shapes = connectedButtonShapes(index = index, count = rowOptions.size),
+                            colors = colors,
+                            contentPadding = ContentPadding,
+                            modifier = Modifier.weight(1f),
+                        ) {
+                            if (option.icon != null) {
+                                Icon(
+                                    imageVector = option.icon,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(IconSize),
+                                )
+                                Spacer(modifier = Modifier.width(IconSpacing))
+                            }
+                            Text(
+                                text = option.label,
+                                style = MaterialTheme.typography.labelLarge,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                    }
+                }
             }
         }
     }

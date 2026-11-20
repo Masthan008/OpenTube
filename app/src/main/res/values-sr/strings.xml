@@ -791,7 +791,7 @@
     <string name="settings_item_import_data">Увоз података</string>
     <string name="settings_item_import_data_subtitle">Враћање из резервне копије или увоз из других апликација</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Верзија, лиценца, сарадници</string>
+    <string name="settings_item_about_flow_subtitle">Верзија, лиценца и линкови</string>
     <string name="settings_item_support">Подршка и донације</string>
     <string name="settings_item_support_subtitle">Помозите у подршци развоју OpenTube</string>
     <string name="settings_region_dialog_title">Изаберите Регион</string>

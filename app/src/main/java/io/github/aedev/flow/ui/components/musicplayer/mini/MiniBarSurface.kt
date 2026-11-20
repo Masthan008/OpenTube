@@ -16,11 +16,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import io.github.aedev.flow.data.local.CoverShape
 import io.github.aedev.flow.data.local.DefaultCoverShapes
+import io.github.aedev.flow.data.local.GlassStyle
 import io.github.aedev.flow.data.local.MiniBarBackground
 import io.github.aedev.flow.data.local.PlayerPreferences
 import io.github.aedev.flow.ui.components.musicplayer.lyrics.LyricsCoverLayer
 import io.github.aedev.flow.ui.components.musicplayer.lyrics.rememberLyricsCover
 import io.github.aedev.flow.ui.components.shared.MediaMiniBarDefaults
+import io.github.aedev.flow.ui.components.shared.flowGlass
 import io.github.aedev.flow.ui.theme.MusicPlayerTrueBlack
 import io.github.aedev.flow.ui.theme.PlayerScrimContent
 import io.github.aedev.flow.ui.theme.PlayerScrimContentSecondary
@@ -43,10 +45,12 @@ internal fun MiniBarSurface(
     content: @Composable () -> Unit,
 ) {
     val playerScheme = MaterialTheme.colorScheme
-    val scheme =
+    val scheme: ColorScheme =
         remember(style, controlScheme, appScheme, playerScheme) {
             when (style) {
-                MiniBarBackground.TINTED -> {
+                MiniBarBackground.TINTED,
+                MiniBarBackground.LIQUID_GLASS,
+                MiniBarBackground.FROSTED_GLASS -> {
                     controlScheme
                 }
 
@@ -70,6 +74,14 @@ internal fun MiniBarSurface(
         when (style) {
             MiniBarBackground.TINTED, MiniBarBackground.COVER_COLOURS -> {
                 Modifier
+            }
+
+            MiniBarBackground.LIQUID_GLASS -> {
+                Modifier.flowGlass(shape = RoundedCornerShape(MediaMiniBarDefaults.CornerRadius), style = GlassStyle.LIQUID)
+            }
+
+            MiniBarBackground.FROSTED_GLASS -> {
+                Modifier.flowGlass(shape = RoundedCornerShape(MediaMiniBarDefaults.CornerRadius), style = GlassStyle.FROSTED)
             }
 
             MiniBarBackground.VIVID -> {

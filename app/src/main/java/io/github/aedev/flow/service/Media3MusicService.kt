@@ -13,6 +13,7 @@ import android.os.Process
 import android.util.Log
 import android.view.KeyEvent
 import androidx.annotation.OptIn
+import androidx.core.app.NotificationCompat
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.AudioAttributes
@@ -37,6 +38,7 @@ import androidx.media3.session.DefaultMediaNotificationProvider
 import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaController
 import androidx.media3.session.MediaLibraryService
+import androidx.media3.session.MediaNotification
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionError
@@ -2220,6 +2222,22 @@ class Media3MusicService : MediaLibraryService() {
             closeButton?.let { builder.add(it) }
 
             return builder.build()
+        }
+
+        override fun addNotificationActions(
+            session: MediaSession,
+            mediaButtons: ImmutableList<CommandButton>,
+            builder: NotificationCompat.Builder,
+            actionFactory: MediaNotification.ActionFactory,
+        ): IntArray {
+            builder.setCategory(NotificationCompat.CATEGORY_TRANSPORT)
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            val defaultIndices = super.addNotificationActions(session, mediaButtons, builder, actionFactory)
+            val prevIndex = mediaButtons.indexOfFirst { it.playerCommand == Player.COMMAND_SEEK_TO_PREVIOUS }
+            val playPauseIndex = mediaButtons.indexOfFirst { it.playerCommand == Player.COMMAND_PLAY_PAUSE }
+            val nextIndex = mediaButtons.indexOfFirst { it.playerCommand == Player.COMMAND_SEEK_TO_NEXT }
+            val compact = listOf(prevIndex, playPauseIndex, nextIndex).filter { it >= 0 }
+            return if (compact.isNotEmpty()) compact.toIntArray() else defaultIndices
         }
     }
 }

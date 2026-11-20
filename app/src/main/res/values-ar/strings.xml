@@ -224,7 +224,7 @@
     <string name="settings_item_import_data">إسترداد البيانات</string>
     <string name="settings_item_import_data_subtitle">استعادة من نسخة احتياطية أو استيراد من تطبيقات أخرى</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">الإصدار، الترخيص، المساهمون</string>
+    <string name="settings_item_about_flow_subtitle">الإصدار، الترخيص والروابط</string>
     <string name="settings_item_support">الدعم و التبرعات</string>
     <string name="settings_item_support_subtitle">ساهم في دعم تطوير OpenTube</string>
     <string name="settings_region_dialog_title">إختر البلد</string>

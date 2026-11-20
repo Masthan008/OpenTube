@@ -367,7 +367,7 @@
     <string name="settings_item_import_data">Daten importieren</string>
     <string name="settings_item_import_data_subtitle">Aus einem Backup wiederherstellen oder Import aus anderen Apps</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Version, Lizenz, Mitwirkende</string>
+    <string name="settings_item_about_flow_subtitle">Version, Lizenz und Links</string>
     <string name="settings_item_support">Unterstützung &amp; Spenden</string>
     <string name="settings_item_support_subtitle">Unterstützung bei der Entwicklung von OpenTube</string>
     <string name="settings_region_dialog_title">Region auswählen</string>

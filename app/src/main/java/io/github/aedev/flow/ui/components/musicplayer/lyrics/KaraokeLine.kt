@@ -148,7 +148,10 @@ internal fun KaraokeLine(
     animationStyle: LyricsAnimationStyle = LyricsAnimationStyle.CLASSIC,
     glow: LyricsGlow = LyricsGlow.NORMAL,
 ) {
-    val moving = motionEnabled && animationStyle != LyricsAnimationStyle.CALM
+    val moving =
+        motionEnabled &&
+            animationStyle != LyricsAnimationStyle.CALM &&
+            animationStyle != LyricsAnimationStyle.MINIMAL
     val cadence = motionEnabled && animationStyle == LyricsAnimationStyle.CADENCE
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
@@ -189,10 +192,15 @@ internal fun KaraokeLine(
         exit.snapTo(0f)
         exit.animateTo(1f, tween(CADENCE_EXIT_MS, easing = LinearEasing))
     }
-    LaunchedEffect(isCurrent, moving) {
+    LaunchedEffect(isCurrent, moving, animationStyle) {
+        val liftSpring =
+            when (animationStyle) {
+                LyricsAnimationStyle.KINETIC -> spring<Float>(dampingRatio = 0.55f, stiffness = Spring.StiffnessMedium)
+                else -> spring<Float>(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
+            }
         lineLift.animateTo(
             targetValue = if (isCurrent && moving) 1f else 0f,
-            animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow),
+            animationSpec = liftSpring,
         )
     }
 
@@ -214,9 +222,21 @@ internal fun KaraokeLine(
             }
         val fontPx = with(density) { style.fontSize.toPx() }
         val feather = fontPx * FEATHER_EM
-        val liftPx = with(density) { WordLift.toPx() }
-        val glowPx = with(density) { glowRadius(glow).toPx() }
-        val glowAlpha = glowPeakAlpha(glow)
+        val liftMultiplier =
+            when (animationStyle) {
+                LyricsAnimationStyle.ZOOM -> 1.35f
+                LyricsAnimationStyle.KINETIC -> 1.25f
+                else -> 1.0f
+            }
+        val liftPx = with(density) { WordLift.toPx() } * liftMultiplier
+        val effectiveGlow =
+            if (animationStyle == LyricsAnimationStyle.GLOW && glow == LyricsGlow.OFF) {
+                LyricsGlow.NORMAL
+            } else {
+                glow
+            }
+        val glowPx = with(density) { glowRadius(effectiveGlow).toPx() }
+        val glowAlpha = glowPeakAlpha(effectiveGlow)
         val layered = needsUnsungLayer(unsungColor)
         val solidUnsung = unsungColor.copy(alpha = 1f)
         // Layered, the unsung text is already under the front, so the front fades the sung colour out.
@@ -280,7 +300,7 @@ internal fun KaraokeLine(
                 frame.anchor = anchor
                 // Grown words reach above the row as well as the lift does.
                 frame.overscan = liftPx * 2f + fontPx * 0.25f
-                frame.glow = glow != LyricsGlow.OFF
+                frame.glow = effectiveGlow != LyricsGlow.OFF
                 drawCadenceLine(geometry, cadenceInk, frame)
                 return@Canvas
             }
@@ -323,7 +343,7 @@ internal fun KaraokeLine(
                     }
                 val glowLayout = cell.glow
                 val glowLevel = heldNoteGlowLevel(progress)
-                if (moving && glow != LyricsGlow.OFF && glowLayout != null && glowLevel >= 0) {
+                if (moving && effectiveGlow != LyricsGlow.OFF && glowLayout != null && glowLevel >= 0) {
                     translate(
                         left = cell.inkLeft - glowLayout.getBoundingBox(0).left,
                         top = row.dy + row.layout.firstBaseline - glowLayout.firstBaseline - wordLift,

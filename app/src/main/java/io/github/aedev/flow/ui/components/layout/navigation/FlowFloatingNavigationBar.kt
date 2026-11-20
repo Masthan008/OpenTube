@@ -2,6 +2,7 @@ package io.github.aedev.flow.ui.components.layout.navigation
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -53,9 +55,13 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import io.github.aedev.flow.R
+import io.github.aedev.flow.data.local.DockLens
+import io.github.aedev.flow.data.local.DockMotion
 import io.github.aedev.flow.data.local.NavBarLabels
 import io.github.aedev.flow.data.local.NavBarLook
 import io.github.aedev.flow.ui.components.shared.MediaMiniBarDefaults
+import io.github.aedev.flow.ui.components.shared.dockHighlight
+import io.github.aedev.flow.ui.components.shared.dockShadow
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -132,10 +138,20 @@ internal fun FlowFloatingNavigationBar(
             )
         }
     val folded = collapsed && open >= 0
+    val foldSpec =
+        remember(look.dockMotion) {
+            when (look.dockMotion) {
+                DockMotion.MINIMIZE -> spring<Float>(dampingRatio = 0.9f, stiffness = 300f)
+                DockMotion.CAPSULE -> spring<Float>(dampingRatio = 0.8f, stiffness = 260f)
+                DockMotion.SINK -> spring<Float>(dampingRatio = 1f, stiffness = 220f)
+                DockMotion.FLOAT -> spring<Float>(dampingRatio = 0.85f, stiffness = 320f)
+                DockMotion.BOUNCE -> spring<Float>(dampingRatio = 0.55f, stiffness = 380f)
+            }
+        }
     val fold =
         animateFloatAsState(
             targetValue = if (folded) 1f else 0f,
-            animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+            animationSpec = foldSpec,
             label = "navFold",
         )
 
@@ -166,15 +182,38 @@ internal fun FlowFloatingNavigationBar(
                     .layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints.copy(minWidth = 0))
                         layout(constraints.maxWidth, placeable.height) {
-                            // Centred while open, sliding to the start edge as it folds to the open tab.
                             val centred = (constraints.maxWidth - placeable.width) / 2f
-                            placeable.placeRelative((centred * (1f - fold.value)).roundToInt(), 0)
+                            val offset =
+                                when (look.dockMotion) {
+                                    DockMotion.CAPSULE -> centred
+                                    else -> (centred * (1f - fold.value))
+                                }
+                            placeable.placeRelative(offset.roundToInt(), 0)
                         }
                     }.graphicsLayer {
-                        scaleX = scrubScale
-                        scaleY = scrubScale
+                        val t = fold.value
+                        when (look.dockMotion) {
+                            DockMotion.SINK -> {
+                                val s = (1f - 0.08f * t) * scrubScale
+                                scaleX = s
+                                scaleY = s
+                                translationY = 14.dp.toPx() * t
+                                alpha = (1f - 0.7f * t).coerceIn(0.2f, 1f)
+                            }
+                            DockMotion.FLOAT -> {
+                                scaleX = scrubScale
+                                scaleY = scrubScale
+                                translationY = -8.dp.toPx() * t
+                            }
+                            else -> {
+                                scaleX = scrubScale
+                                scaleY = scrubScale
+                            }
+                        }
                         transformOrigin = TransformOrigin(0.5f, 1f)
-                    },
+                    }
+                    .dockShadow(CircleShape)
+                    .dockHighlight(CircleShape),
         ) {
             FloatingNavRow(
                 slots = slots,
@@ -184,6 +223,7 @@ internal fun FlowFloatingNavigationBar(
                 scrub = look.scrub && !folded,
                 folded = folded,
                 pop = look.iconPop,
+                dockLens = look.dockLens,
                 onScrubbing = { scrubbing = it },
                 onSelect = { index ->
                     val tab = slots.getOrNull(index)?.tab
@@ -219,6 +259,7 @@ private fun FloatingNavRow(
     scrub: Boolean,
     folded: Boolean,
     pop: Boolean,
+    dockLens: DockLens = DockLens.STRETCH,
     onScrubbing: (Boolean) -> Unit,
     onSelect: (Int) -> Unit,
 ) {
@@ -229,10 +270,18 @@ private fun FloatingNavRow(
     val target = if (hover >= 0) geometry.indicatorSpan(hover, metrics) else geometry.indicatorStart..geometry.indicatorEnd
     val indicatorStart = remember { Animatable(target.start) }
     val indicatorEnd = remember { Animatable(target.endInclusive) }
+    val (leadSpec, followSpec) =
+        remember(dockLens) {
+            when (dockLens) {
+                DockLens.STRETCH -> spring<Float>(dampingRatio = 1f, stiffness = 520f) to spring<Float>(dampingRatio = 1f, stiffness = 170f)
+                DockLens.JELLY -> spring<Float>(dampingRatio = 0.5f, stiffness = 480f) to spring<Float>(dampingRatio = 0.55f, stiffness = 190f)
+                DockLens.GLIDE -> spring<Float>(dampingRatio = 0.86f, stiffness = 360f).let { it to it }
+            }
+        }
     LaunchedEffect(target.start, target.endInclusive) {
         val forward = target.start > indicatorStart.value
-        launch { indicatorStart.animateTo(target.start, if (forward) motion.defaultSpatialSpec() else motion.fastSpatialSpec()) }
-        launch { indicatorEnd.animateTo(target.endInclusive, if (forward) motion.fastSpatialSpec() else motion.defaultSpatialSpec()) }
+        launch { indicatorStart.animateTo(target.start, if (forward) followSpec else leadSpec) }
+        launch { indicatorEnd.animateTo(target.endInclusive, if (forward) leadSpec else followSpec) }
     }
     val currentGeometry by rememberUpdatedState(geometry)
     val ltr by rememberUpdatedState(LocalLayoutDirection.current == LayoutDirection.Ltr)

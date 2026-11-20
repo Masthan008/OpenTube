@@ -184,15 +184,59 @@ internal fun LyricsLine(
             if (!blurOtherLines || !isSynced || isActiveLine || item.isBackground) {
                 0f
             } else {
-                with(density) { (lineDistance.coerceAtMost(MAX_BLUR_DISTANCE) * 4.dp.toPx()) }
+                val perLineBlur =
+                    when (animationStyle) {
+                        LyricsAnimationStyle.MINIMAL,
+                        LyricsAnimationStyle.CALM,
+                        LyricsAnimationStyle.KARAOKE -> 0.dp
+                        LyricsAnimationStyle.GLOW -> 2.dp
+                        LyricsAnimationStyle.SPOTLIGHT -> 6.dp
+                        LyricsAnimationStyle.ZOOM -> 5.dp
+                        else -> 4.dp
+                    }
+                with(density) { (lineDistance.coerceAtMost(MAX_BLUR_DISTANCE) * perLineBlur.toPx()) }
             },
         animationSpec = if (motionEnabled) motion.slowEffectsSpec() else snap(),
         label = "lyricsDofBlur",
     )
+    val targetScale =
+        when {
+            !motionEnabled || animationStyle == LyricsAnimationStyle.MINIMAL || animationStyle == LyricsAnimationStyle.CALM -> 1f
+            isActiveLine ->
+                when (animationStyle) {
+                    LyricsAnimationStyle.ZOOM -> 1.10f
+                    LyricsAnimationStyle.SPOTLIGHT -> 1.08f
+                    LyricsAnimationStyle.KINETIC -> 1.06f
+                    LyricsAnimationStyle.KARAOKE -> 1.04f
+                    else -> ACTIVE_SCALE
+                }
+            else ->
+                when (animationStyle) {
+                    LyricsAnimationStyle.ZOOM -> 0.88f
+                    LyricsAnimationStyle.SPOTLIGHT -> 0.90f
+                    else -> INACTIVE_SCALE
+                }
+        }
+    val spatialSpec =
+        when (animationStyle) {
+            LyricsAnimationStyle.KINETIC -> androidx.compose.animation.core.spring<Float>(dampingRatio = 0.55f, stiffness = 400f)
+            else -> motion.defaultSpatialSpec<Float>()
+        }
     val depthScale by animateFloatAsState(
-        targetValue = if (isActiveLine) ACTIVE_SCALE else INACTIVE_SCALE,
-        animationSpec = if (motionEnabled) motion.defaultSpatialSpec() else snap(),
+        targetValue = targetScale,
+        animationSpec = if (motionEnabled) spatialSpec else snap(),
         label = "lyricsDepthScale",
+    )
+    val cascadeOffsetX by animateFloatAsState(
+        targetValue =
+            if (motionEnabled && animationStyle == LyricsAnimationStyle.CASCADE && !isActiveLine && !item.isBackground) {
+                val sign = if (look.align == TextAlign.End || look.align == TextAlign.Right) 1f else -1f
+                with(density) { (lineDistance.coerceAtMost(3) * 6.dp.toPx() * sign) }
+            } else {
+                0f
+            },
+        animationSpec = if (motionEnabled) motion.defaultSpatialSpec() else snap(),
+        label = "lyricsCascadeOffset",
     )
     // Radii are whole pixels, so an animation re-uses a handful of effects instead of one per frame.
     val blurEffects = remember { HashMap<Int, androidx.compose.ui.graphics.RenderEffect>() }
@@ -213,6 +257,7 @@ internal fun LyricsLine(
                 transformOrigin = scaleOrigin
                 scaleX = depthScale
                 scaleY = depthScale
+                translationX = cascadeOffsetX
                 val radius = dofBlurRadius.roundToInt()
                 renderEffect =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && radius > 0) {

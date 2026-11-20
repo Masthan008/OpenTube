@@ -476,7 +476,7 @@
     <string name="settings_item_import_data">导入数据</string>
     <string name="settings_item_import_data_subtitle">从备份恢复或从其他应用程序导入</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">版本、许可证、贡献者</string>
+    <string name="settings_item_about_flow_subtitle">版本、许可证和链接</string>
     <string name="settings_item_support">支持与捐赠</string>
     <string name="settings_item_support_subtitle">帮助支持Flow的发展</string>
     <string name="settings_region_dialog_title">选择地区</string>

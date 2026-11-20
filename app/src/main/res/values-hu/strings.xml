@@ -769,7 +769,7 @@
     <string name="settings_item_import_data">Adatok importálása</string>
     <string name="settings_item_import_data_subtitle">Visszaállítás biztonsági másolatból vagy importálás más alkalmazásokból</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Verzió, licenc, közreműködők</string>
+    <string name="settings_item_about_flow_subtitle">Verzió, licenc és linkek</string>
     <string name="settings_item_support">Támogatás és adományok</string>
     <string name="settings_item_support_subtitle">Segítsen az OpenTube fejlesztésében</string>
     <string name="settings_region_dialog_title">Válassza ki a Régiót</string>

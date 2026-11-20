@@ -7,12 +7,16 @@ import io.github.aedev.flow.data.local.AppUiModePreferences
 import io.github.aedev.flow.data.local.DEFAULT_NAV_TAB_ORDER
 import io.github.aedev.flow.data.local.DEFAULT_NEW_SETTINGS_HIGHLIGHT
 import io.github.aedev.flow.data.local.DEFAULT_NEW_SETTINGS_HIGHLIGHT_DAYS
+import io.github.aedev.flow.data.local.DockLens
+import io.github.aedev.flow.data.local.DockMotion
+import io.github.aedev.flow.data.local.GlassStyle
 import io.github.aedev.flow.data.local.HomeFeedColumns
 import io.github.aedev.flow.data.local.HomeViewMode
 import io.github.aedev.flow.data.local.LocalDataManager
 import io.github.aedev.flow.data.local.NavBarLabels
 import io.github.aedev.flow.data.local.NavBarScroll
 import io.github.aedev.flow.data.local.NavBarStyle
+import io.github.aedev.flow.data.local.PageTransitionStyle
 import io.github.aedev.flow.data.local.PlayerPreferences
 import io.github.aedev.flow.platform.AppIconController
 import io.github.aedev.flow.platform.AppUiMode
@@ -81,6 +85,13 @@ class AppearanceViewModel
         val navIconPop = preferences.bottomNavIconPop.asState(false)
         val navScroll = preferences.bottomNavScroll.asState(NavBarScroll.SHRINK)
         val navMiniBeside = preferences.bottomNavMiniBeside.asState(false)
+        val navDockMotion = preferences.bottomNavDockMotion.asState(DockMotion.MINIMIZE)
+        val navDockLens = preferences.bottomNavDockLens.asState(DockLens.STRETCH)
+        val glassStyle = preferences.glassStyle.asState(GlassStyle.LIQUID)
+        val reduceBlur = preferences.reduceBlur.asState(false)
+        val pageTransitionStyle = preferences.pageTransitionStyle.asState(PageTransitionStyle.SLIDE)
+        val openingAnimation = preferences.openingAnimation.asState(true)
+        val originIslandEnabled = preferences.originIslandEnabled.asState(true)
         val searchShowsNavBar = preferences.searchShowsNavBar.asState(false)
         val innerPagesShowNavBar = preferences.innerPagesShowNavBar.asState(false)
         val navTabOrder = preferences.navTabOrder.asState(DEFAULT_NAV_TAB_ORDER)
@@ -172,6 +183,20 @@ class AppearanceViewModel
         fun setNavScroll(scroll: NavBarScroll) = write { preferences.setBottomNavScroll(scroll) }
 
         fun setNavMiniBeside(enabled: Boolean) = write { preferences.setBottomNavMiniBeside(enabled) }
+
+        fun setNavDockMotion(motion: DockMotion) = write { preferences.setBottomNavDockMotion(motion) }
+
+        fun setNavDockLens(lens: DockLens) = write { preferences.setBottomNavDockLens(lens) }
+
+        fun setGlassStyle(style: GlassStyle) = write { preferences.setGlassStyle(style) }
+
+        fun setReduceBlur(enabled: Boolean) = write { preferences.setReduceBlur(enabled) }
+
+        fun setPageTransitionStyle(style: PageTransitionStyle) = write { preferences.setPageTransitionStyle(style) }
+
+        fun setOpeningAnimation(enabled: Boolean) = write { preferences.setOpeningAnimation(enabled) }
+
+        fun setOriginIslandEnabled(enabled: Boolean) = write { preferences.setOriginIslandEnabled(enabled) }
 
         fun setSearchShowsNavBar(enabled: Boolean) = write { preferences.setSearchShowsNavBar(enabled) }
 

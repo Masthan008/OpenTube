@@ -476,7 +476,7 @@
     <string name="settings_item_import_data">Nhập dữ liệu</string>
     <string name="settings_item_import_data_subtitle">Phục hồi từ bản sao lưu hoặc nhập từ ứng dụng khác</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">Phiên bản, giấy phép, người đóng góp</string>
+    <string name="settings_item_about_flow_subtitle">Phiên bản, giấy phép và liên kết</string>
     <string name="settings_item_support">Hỗ trợ &amp; Quyên góp</string>
     <string name="settings_item_support_subtitle">Giúp phát triển OpenTube</string>
     <string name="settings_region_dialog_title">Chọn khu vực</string>

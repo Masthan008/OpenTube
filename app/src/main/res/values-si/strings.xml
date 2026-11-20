@@ -769,7 +769,7 @@
     <string name="settings_item_import_data">දත්ත ආනයනය කරන්න</string>
     <string name="settings_item_import_data_subtitle">උපස්ථයෙන් ප්රතිසාධනය කරන්න හෝ වෙනත් යෙදුම්වලින් ආයාත කරන්න</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">අනුවාදය, බලපත්රය, දායකයින්</string>
+    <string name="settings_item_about_flow_subtitle">අනුවාදය, බලපත්රය සහ සබැඳි</string>
     <string name="settings_item_support">ආධාර සහ පරිත්යාග</string>
     <string name="settings_item_support_subtitle">OpenTube සංවර්ධනයට සහාය වන්න</string>
     <string name="settings_region_dialog_title">කලාපය තෝරන්න</string>

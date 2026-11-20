@@ -128,7 +128,7 @@ internal data class LyricsDisplayOptions(
     val keepScreenOn: Boolean = false,
     val blurOtherLines: Boolean = true,
     val background: LyricsBackgroundStyle = LyricsBackgroundStyle.SOLID,
-    val animationStyle: LyricsAnimationStyle = LyricsAnimationStyle.CADENCE,
+    val animationStyle: LyricsAnimationStyle = LyricsAnimationStyle.FLUID,
     val glow: LyricsGlow = LyricsGlow.NORMAL,
 )
 

@@ -769,7 +769,7 @@
     <string name="settings_item_import_data">ڈیٹا درآمد کریں۔</string>
     <string name="settings_item_import_data_subtitle">بیک اپ سے بحال کریں یا دوسری ایپس سے درآمد کریں۔</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">ورژن، لائسنس، شراکت دار</string>
+    <string name="settings_item_about_flow_subtitle">ورژن، لائسنس اور لنکس</string>
     <string name="settings_item_support">سپورٹ اور عطیات</string>
     <string name="settings_item_support_subtitle">OpenTube کی ترقی میں مدد کریں۔</string>
     <string name="settings_region_dialog_title">علاقہ منتخب کریں۔</string>

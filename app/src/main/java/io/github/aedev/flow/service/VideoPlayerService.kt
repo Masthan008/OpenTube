@@ -76,13 +76,28 @@ class VideoPlayerService : MediaSessionService() {
     override fun onCreate() {
         super.onCreate()
         val notificationProvider =
-            DefaultMediaNotificationProvider
-                .Builder(this)
-                .setChannelId(NotificationHelper.CHANNEL_PLAYBACK)
-                .setChannelName(R.string.notification_channel_video_playback)
-                .setNotificationId(NotificationHelper.NOTIFICATION_PLAYBACK)
-                .build()
-                .apply { setSmallIcon(R.drawable.ic_notification_logo) }
+            object : DefaultMediaNotificationProvider(
+                this,
+                { NotificationHelper.NOTIFICATION_PLAYBACK },
+                NotificationHelper.CHANNEL_PLAYBACK,
+                R.string.notification_channel_video_playback,
+            ) {
+                override fun addNotificationActions(
+                    session: MediaSession,
+                    mediaButtons: com.google.common.collect.ImmutableList<androidx.media3.session.CommandButton>,
+                    builder: androidx.core.app.NotificationCompat.Builder,
+                    actionFactory: androidx.media3.session.MediaNotification.ActionFactory,
+                ): IntArray {
+                    builder.setCategory(androidx.core.app.NotificationCompat.CATEGORY_TRANSPORT)
+                    builder.setVisibility(androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC)
+                    val defaultIndices = super.addNotificationActions(session, mediaButtons, builder, actionFactory)
+                    val prevIndex = mediaButtons.indexOfFirst { it.playerCommand == Player.COMMAND_SEEK_TO_PREVIOUS }
+                    val playPauseIndex = mediaButtons.indexOfFirst { it.playerCommand == Player.COMMAND_PLAY_PAUSE }
+                    val nextIndex = mediaButtons.indexOfFirst { it.playerCommand == Player.COMMAND_SEEK_TO_NEXT }
+                    val compact = listOf(prevIndex, playPauseIndex, nextIndex).filter { it >= 0 }
+                    return if (compact.isNotEmpty()) compact.toIntArray() else defaultIndices
+                }
+            }.apply { setSmallIcon(R.drawable.ic_notification_logo) }
         setMediaNotificationProvider(notificationProvider)
         recordForegroundStartFailures("video-service")
 

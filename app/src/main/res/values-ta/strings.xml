@@ -769,7 +769,7 @@
     <string name="settings_item_import_data">தரவை இறக்குமதி செய்யவும்</string>
     <string name="settings_item_import_data_subtitle">காப்புப்பிரதியிலிருந்து மீட்டமைக்கவும் அல்லது பிற பயன்பாடுகளிலிருந்து இறக்குமதி செய்யவும்</string>
     <string name="settings_item_about_flow">About OpenTube</string>
-    <string name="settings_item_about_flow_subtitle">பதிப்பு, உரிமம், பங்களிப்பாளர்கள்</string>
+    <string name="settings_item_about_flow_subtitle">பதிப்பு, உரிமம் மற்றும் இணைப்புகள்</string>
     <string name="settings_item_support">ஆதரவு மற்றும் நன்கொடைகள்</string>
     <string name="settings_item_support_subtitle">OpenTube இன் வளர்ச்சியை ஆதரிக்க உதவுங்கள்</string>
     <string name="settings_region_dialog_title">பிராந்தியத்தைத் தேர்ந்தெடுக்கவும்</string>
