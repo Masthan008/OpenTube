@@ -80,8 +80,7 @@ fun Modifier.pressable(
         .graphicsLayer {
             scaleX = scale.value
             scaleY = scale.value
-        }
-        .clickable(
+        }.clickable(
             interactionSource = interaction,
             indication = null,
             enabled = enabled,

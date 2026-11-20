@@ -188,10 +188,15 @@ internal fun LyricsLine(
                     when (animationStyle) {
                         LyricsAnimationStyle.MINIMAL,
                         LyricsAnimationStyle.CALM,
-                        LyricsAnimationStyle.KARAOKE -> 0.dp
+                        LyricsAnimationStyle.KARAOKE,
+                        -> 0.dp
+
                         LyricsAnimationStyle.GLOW -> 2.dp
+
                         LyricsAnimationStyle.SPOTLIGHT -> 6.dp
+
                         LyricsAnimationStyle.ZOOM -> 5.dp
+
                         else -> 4.dp
                     }
                 with(density) { (lineDistance.coerceAtMost(MAX_BLUR_DISTANCE) * perLineBlur.toPx()) }
@@ -201,8 +206,11 @@ internal fun LyricsLine(
     )
     val targetScale =
         when {
-            !motionEnabled || animationStyle == LyricsAnimationStyle.MINIMAL || animationStyle == LyricsAnimationStyle.CALM -> 1f
-            isActiveLine ->
+            !motionEnabled || animationStyle == LyricsAnimationStyle.MINIMAL || animationStyle == LyricsAnimationStyle.CALM -> {
+                1f
+            }
+
+            isActiveLine -> {
                 when (animationStyle) {
                     LyricsAnimationStyle.ZOOM -> 1.10f
                     LyricsAnimationStyle.SPOTLIGHT -> 1.08f
@@ -210,17 +218,26 @@ internal fun LyricsLine(
                     LyricsAnimationStyle.KARAOKE -> 1.04f
                     else -> ACTIVE_SCALE
                 }
-            else ->
+            }
+
+            else -> {
                 when (animationStyle) {
                     LyricsAnimationStyle.ZOOM -> 0.88f
                     LyricsAnimationStyle.SPOTLIGHT -> 0.90f
                     else -> INACTIVE_SCALE
                 }
+            }
         }
     val spatialSpec =
         when (animationStyle) {
-            LyricsAnimationStyle.KINETIC -> androidx.compose.animation.core.spring<Float>(dampingRatio = 0.55f, stiffness = 400f)
-            else -> motion.defaultSpatialSpec<Float>()
+            LyricsAnimationStyle.KINETIC -> {
+                androidx.compose.animation.core
+                    .spring<Float>(dampingRatio = 0.55f, stiffness = 400f)
+            }
+
+            else -> {
+                motion.defaultSpatialSpec<Float>()
+            }
         }
     val depthScale by animateFloatAsState(
         targetValue = targetScale,

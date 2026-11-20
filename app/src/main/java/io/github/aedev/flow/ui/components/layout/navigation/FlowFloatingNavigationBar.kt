@@ -200,19 +200,20 @@ internal fun FlowFloatingNavigationBar(
                                 translationY = 14.dp.toPx() * t
                                 alpha = (1f - 0.7f * t).coerceIn(0.2f, 1f)
                             }
+
                             DockMotion.FLOAT -> {
                                 scaleX = scrubScale
                                 scaleY = scrubScale
                                 translationY = -8.dp.toPx() * t
                             }
+
                             else -> {
                                 scaleX = scrubScale
                                 scaleY = scrubScale
                             }
                         }
                         transformOrigin = TransformOrigin(0.5f, 1f)
-                    }
-                    .dockShadow(CircleShape)
+                    }.dockShadow(CircleShape)
                     .dockHighlight(CircleShape),
         ) {
             FloatingNavRow(
@@ -273,9 +274,18 @@ private fun FloatingNavRow(
     val (leadSpec, followSpec) =
         remember(dockLens) {
             when (dockLens) {
-                DockLens.STRETCH -> spring<Float>(dampingRatio = 1f, stiffness = 520f) to spring<Float>(dampingRatio = 1f, stiffness = 170f)
-                DockLens.JELLY -> spring<Float>(dampingRatio = 0.5f, stiffness = 480f) to spring<Float>(dampingRatio = 0.55f, stiffness = 190f)
-                DockLens.GLIDE -> spring<Float>(dampingRatio = 0.86f, stiffness = 360f).let { it to it }
+                DockLens.STRETCH -> {
+                    spring<Float>(dampingRatio = 1f, stiffness = 520f) to spring<Float>(dampingRatio = 1f, stiffness = 170f)
+                }
+
+                DockLens.JELLY -> {
+                    spring<Float>(dampingRatio = 0.5f, stiffness = 480f) to
+                        spring<Float>(dampingRatio = 0.55f, stiffness = 190f)
+                }
+
+                DockLens.GLIDE -> {
+                    spring<Float>(dampingRatio = 0.86f, stiffness = 360f).let { it to it }
+                }
             }
         }
     LaunchedEffect(target.start, target.endInclusive) {

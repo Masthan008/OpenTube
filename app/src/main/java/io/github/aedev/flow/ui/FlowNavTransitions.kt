@@ -21,101 +21,137 @@ import androidx.navigation.NavBackStackEntry
 import io.github.aedev.flow.data.local.PageTransitionStyle
 
 internal object FlowNavTransitions {
-    fun enter(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
-        when (style) {
-            PageTransitionStyle.FADE -> fadeIn(animationSpec = tween(220, easing = FastOutSlowInEasing))
-            PageTransitionStyle.ZOOM ->
-                fadeIn(animationSpec = tween(220)) +
-                    scaleIn(
-                        animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
-                        initialScale = 0.92f,
-                    )
-            PageTransitionStyle.RISE ->
-                fadeIn(animationSpec = tween(220)) +
-                    slideInVertically(
-                        initialOffsetY = { (it * 0.10f).toInt() },
-                        animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
-                    )
-            PageTransitionStyle.SLIDE ->
-                fadeIn(animationSpec = tween(250, easing = FastOutSlowInEasing)) +
-                    slideInHorizontally(
-                        initialOffsetX = { (it * 0.06f).toInt() },
-                        animationSpec =
-                            spring(
-                                dampingRatio = Spring.DampingRatioNoBouncy,
-                                stiffness = Spring.StiffnessMediumLow,
-                            ),
-                    )
-        }
-    }
+    fun enter(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition =
+        {
+            when (style) {
+                PageTransitionStyle.FADE -> {
+                    fadeIn(animationSpec = tween(220, easing = FastOutSlowInEasing))
+                }
 
-    fun exit(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = {
-        when (style) {
-            PageTransitionStyle.FADE -> fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing))
-            PageTransitionStyle.ZOOM ->
-                fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
-                    scaleOut(
-                        animationSpec = tween(220, easing = FastOutSlowInEasing),
-                        targetScale = 1.06f,
-                    )
-            PageTransitionStyle.RISE ->
-                fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
-                    slideOutVertically(
-                        targetOffsetY = { -(it * 0.05f).toInt() },
-                        animationSpec = tween(200, easing = FastOutSlowInEasing),
-                    )
-            PageTransitionStyle.SLIDE ->
-                fadeOut(animationSpec = tween(200, easing = FastOutLinearInEasing))
-        }
-    }
+                PageTransitionStyle.ZOOM -> {
+                    fadeIn(animationSpec = tween(220)) +
+                        scaleIn(
+                            animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
+                            initialScale = 0.92f,
+                        )
+                }
 
-    fun popEnter(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
-        when (style) {
-            PageTransitionStyle.FADE -> fadeIn(animationSpec = tween(220, easing = FastOutSlowInEasing))
-            PageTransitionStyle.ZOOM ->
-                fadeIn(animationSpec = tween(220)) +
-                    scaleIn(
-                        animationSpec = tween(240, easing = FastOutSlowInEasing),
-                        initialScale = 1.06f,
-                    )
-            PageTransitionStyle.RISE ->
-                fadeIn(animationSpec = tween(220)) +
-                    slideInVertically(
-                        initialOffsetY = { -(it * 0.05f).toInt() },
-                        animationSpec = tween(200, easing = FastOutSlowInEasing),
-                    )
-            PageTransitionStyle.SLIDE ->
-                fadeIn(animationSpec = tween(250, easing = FastOutSlowInEasing))
-        }
-    }
+                PageTransitionStyle.RISE -> {
+                    fadeIn(animationSpec = tween(220)) +
+                        slideInVertically(
+                            initialOffsetY = { (it * 0.10f).toInt() },
+                            animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
+                        )
+                }
 
-    fun popExit(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = {
-        when (style) {
-            PageTransitionStyle.FADE -> fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing))
-            PageTransitionStyle.ZOOM ->
-                fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
-                    scaleOut(
-                        animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
-                        targetScale = 0.92f,
-                    )
-            PageTransitionStyle.RISE ->
-                fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
-                    slideOutVertically(
-                        targetOffsetY = { (it * 0.10f).toInt() },
-                        animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
-                    )
-            PageTransitionStyle.SLIDE ->
-                fadeOut(animationSpec = tween(200, easing = FastOutLinearInEasing)) +
-                    slideOutHorizontally(
-                        targetOffsetX = { (it * 0.06f).toInt() },
-                        animationSpec =
-                            spring(
-                                dampingRatio = Spring.DampingRatioNoBouncy,
-                                stiffness = Spring.StiffnessMediumLow,
-                            ),
-                    )
+                PageTransitionStyle.SLIDE -> {
+                    fadeIn(animationSpec = tween(250, easing = FastOutSlowInEasing)) +
+                        slideInHorizontally(
+                            initialOffsetX = { (it * 0.06f).toInt() },
+                            animationSpec =
+                                spring(
+                                    dampingRatio = Spring.DampingRatioNoBouncy,
+                                    stiffness = Spring.StiffnessMediumLow,
+                                ),
+                        )
+                }
+            }
         }
-    }
+
+    fun exit(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition =
+        {
+            when (style) {
+                PageTransitionStyle.FADE -> {
+                    fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing))
+                }
+
+                PageTransitionStyle.ZOOM -> {
+                    fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
+                        scaleOut(
+                            animationSpec = tween(220, easing = FastOutSlowInEasing),
+                            targetScale = 1.06f,
+                        )
+                }
+
+                PageTransitionStyle.RISE -> {
+                    fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
+                        slideOutVertically(
+                            targetOffsetY = { -(it * 0.05f).toInt() },
+                            animationSpec = tween(200, easing = FastOutSlowInEasing),
+                        )
+                }
+
+                PageTransitionStyle.SLIDE -> {
+                    fadeOut(animationSpec = tween(200, easing = FastOutLinearInEasing))
+                }
+            }
+        }
+
+    fun popEnter(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition =
+        {
+            when (style) {
+                PageTransitionStyle.FADE -> {
+                    fadeIn(animationSpec = tween(220, easing = FastOutSlowInEasing))
+                }
+
+                PageTransitionStyle.ZOOM -> {
+                    fadeIn(animationSpec = tween(220)) +
+                        scaleIn(
+                            animationSpec = tween(240, easing = FastOutSlowInEasing),
+                            initialScale = 1.06f,
+                        )
+                }
+
+                PageTransitionStyle.RISE -> {
+                    fadeIn(animationSpec = tween(220)) +
+                        slideInVertically(
+                            initialOffsetY = { -(it * 0.05f).toInt() },
+                            animationSpec = tween(200, easing = FastOutSlowInEasing),
+                        )
+                }
+
+                PageTransitionStyle.SLIDE -> {
+                    fadeIn(animationSpec = tween(250, easing = FastOutSlowInEasing))
+                }
+            }
+        }
+
+    fun popExit(style: PageTransitionStyle): AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition =
+        {
+            when (style) {
+                PageTransitionStyle.FADE -> {
+                    fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing))
+                }
+
+                PageTransitionStyle.ZOOM -> {
+                    fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
+                        scaleOut(
+                            animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
+                            targetScale = 0.92f,
+                        )
+                }
+
+                PageTransitionStyle.RISE -> {
+                    fadeOut(animationSpec = tween(180, easing = FastOutLinearInEasing)) +
+                        slideOutVertically(
+                            targetOffsetY = { (it * 0.10f).toInt() },
+                            animationSpec = spring(dampingRatio = 0.9f, stiffness = Spring.StiffnessMediumLow),
+                        )
+                }
+
+                PageTransitionStyle.SLIDE -> {
+                    fadeOut(animationSpec = tween(200, easing = FastOutLinearInEasing)) +
+                        slideOutHorizontally(
+                            targetOffsetX = { (it * 0.06f).toInt() },
+                            animationSpec =
+                                spring(
+                                    dampingRatio = Spring.DampingRatioNoBouncy,
+                                    stiffness = Spring.StiffnessMediumLow,
+                                ),
+                        )
+                }
+            }
+        }
 
     val enter: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = enter(PageTransitionStyle.SLIDE)
     val exit: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = exit(PageTransitionStyle.SLIDE)

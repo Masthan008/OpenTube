@@ -154,6 +154,7 @@ fun OpenTubeIslandHost(
                         isMusic = true,
                     )
                 }
+
                 video != null -> {
                     IslandMedia(
                         id = video.id,
@@ -164,7 +165,10 @@ fun OpenTubeIslandHost(
                         isMusic = false,
                     )
                 }
-                else -> null
+
+                else -> {
+                    null
+                }
             }
         }
     }
@@ -285,20 +289,17 @@ fun IslandCapsule(
                     val scale = stretch.value
                     scaleX = scale
                     scaleY = scale
-                }
-                .border(
+                }.border(
                     width = 1.dp,
                     color = colorScheme.outlineVariant.copy(alpha = 0.35f),
                     shape = containerShape,
-                )
-                .pointerInput(media.id) {
+                ).pointerInput(media.id) {
                     detectVerticalDragGestures { _, dragAmount ->
                         if (dragAmount < -12f) {
                             onDismiss()
                         }
                     }
-                }
-                .clickable(
+                }.clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                     onClick = onTap,
@@ -405,7 +406,8 @@ private fun IslandCoverDisc(
         if (thumbnailUrl.isNotBlank()) {
             AsyncImage(
                 model =
-                    ImageRequest.Builder(context)
+                    ImageRequest
+                        .Builder(context)
                         .data(thumbnailUrl)
                         .crossfade(true)
                         .build(),
@@ -520,9 +522,7 @@ private fun IslandEqualizerBars(
  * Interactive preview of the Origin Island Capsule for settings pages.
  */
 @Composable
-fun OpenTubeIslandPreview(
-    modifier: Modifier = Modifier,
-) {
+fun OpenTubeIslandPreview(modifier: Modifier = Modifier) {
     var isPlaying by remember { mutableStateOf(true) }
     Box(
         modifier = modifier.fillMaxWidth(),

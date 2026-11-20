@@ -110,8 +110,7 @@ fun ShareTogetherProfileDialog(
                                         width = if (isSelected) 3.dp else 0.dp,
                                         color = if (isSelected) colorScheme.onSurface else Color.Transparent,
                                         shape = CircleShape,
-                                    )
-                                    .clickable { selectedAvatarId = index },
+                                    ).clickable { selectedAvatarId = index },
                             contentAlignment = Alignment.Center,
                         ) {
                             if (isSelected) {

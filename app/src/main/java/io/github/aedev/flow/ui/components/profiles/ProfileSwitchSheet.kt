@@ -34,7 +34,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import io.github.aedev.flow.ui.LocalOpenShareTogether
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,6 +41,7 @@ import io.github.aedev.flow.R
 import io.github.aedev.flow.data.profile.Profile
 import io.github.aedev.flow.data.profile.ProfileRegistry
 import io.github.aedev.flow.data.profile.displayName
+import io.github.aedev.flow.ui.LocalOpenShareTogether
 import io.github.aedev.flow.ui.components.layout.LocalFlowSnackbarHostState
 import io.github.aedev.flow.ui.components.settings.SettingsDestination
 import io.github.aedev.flow.ui.components.settings.SettingsTarget

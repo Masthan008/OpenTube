@@ -50,7 +50,8 @@ internal fun MiniBarSurface(
             when (style) {
                 MiniBarBackground.TINTED,
                 MiniBarBackground.LIQUID_GLASS,
-                MiniBarBackground.FROSTED_GLASS -> {
+                MiniBarBackground.FROSTED_GLASS,
+                -> {
                     controlScheme
                 }
 

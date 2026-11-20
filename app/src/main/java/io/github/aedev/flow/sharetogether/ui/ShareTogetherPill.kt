@@ -71,8 +71,7 @@ fun ShareTogetherPill(
                             width = 1.dp,
                             color = colorScheme.primary.copy(alpha = 0.45f),
                             shape = RoundedCornerShape(20.dp),
-                        )
-                        .clickable(
+                        ).clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                             onClick = onClick,

@@ -52,7 +52,14 @@ fun <T> FlowConnectedToggleGroup(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: ToggleButtonColors = ToggleButtonDefaults.colors(),
-    columns: Int = if (options.size > 4) 3 else if (options.size == 4) 2 else options.size,
+    columns: Int =
+        if (options.size > 4) {
+            3
+        } else if (options.size == 4) {
+            2
+        } else {
+            options.size
+        },
 ) {
     val haptics = LocalHapticFeedback.current
     if (options.size <= 3) {

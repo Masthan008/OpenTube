@@ -37,20 +37,20 @@ import io.github.aedev.flow.player.EnhancedMusicPlayerManager
 import io.github.aedev.flow.player.EnhancedPlayerManager
 import io.github.aedev.flow.player.GlobalPlayerState
 import io.github.aedev.flow.player.SleepTimerManager
+import io.github.aedev.flow.sharetogether.player.ShareTogetherSyncEngine
+import io.github.aedev.flow.sharetogether.session.ShareTogetherManager
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherPill
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherProfileDialog
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherReactionOverlay
+import io.github.aedev.flow.sharetogether.ui.ShareTogetherSheet
 import io.github.aedev.flow.sync2.service.LinkedCatchUp
 import io.github.aedev.flow.ui.components.donation.DonationPromptHost
 import io.github.aedev.flow.ui.components.equalizer.LocalEqualizerState
 import io.github.aedev.flow.ui.components.layout.LocalFlowBottomInsets
 import io.github.aedev.flow.ui.components.layout.LocalFlowSnackbarHostState
-import io.github.aedev.flow.sharetogether.player.ShareTogetherSyncEngine
-import io.github.aedev.flow.sharetogether.ui.ShareTogetherPill
-import io.github.aedev.flow.sharetogether.ui.ShareTogetherProfileDialog
-import io.github.aedev.flow.sharetogether.ui.ShareTogetherReactionOverlay
-import io.github.aedev.flow.sharetogether.ui.ShareTogetherSheet
 import io.github.aedev.flow.ui.components.layout.navigation.FlowNavigationChrome
 import io.github.aedev.flow.ui.components.layout.navigation.FlowNavigationDefaults
 import io.github.aedev.flow.ui.components.layout.navigation.FlowTab
-import io.github.aedev.flow.ui.components.shared.OpenTubeIslandHost
 import io.github.aedev.flow.ui.components.layout.navigation.NavigationVisibility
 import io.github.aedev.flow.ui.components.layout.navigation.flowUsesNavigationRail
 import io.github.aedev.flow.ui.components.layout.navigation.rememberFlowNavigationScrollState
@@ -69,6 +69,7 @@ import io.github.aedev.flow.ui.components.settings.SettingsTarget
 import io.github.aedev.flow.ui.components.shared.FlowLoadingIndicator
 import io.github.aedev.flow.ui.components.shared.LocalMediaOpenOrigins
 import io.github.aedev.flow.ui.components.shared.MediaOpenOrigins
+import io.github.aedev.flow.ui.components.shared.OpenTubeIslandHost
 import io.github.aedev.flow.ui.components.shared.SubscriptionBellAlerts
 import io.github.aedev.flow.ui.components.videoplayer.PlayerSheetValue
 import io.github.aedev.flow.ui.components.videoplayer.rememberPlayerDraggableState
@@ -147,7 +148,7 @@ fun FlowApp(
     val shareTogetherAvatarId by preferences.shareTogetherAvatarId.collectAsState(initial = 0)
     var showShareTogetherSheet by remember { mutableStateOf(false) }
     var showShareTogetherProfileDialog by remember { mutableStateOf(false) }
-    val shareTogetherSession by io.github.aedev.flow.sharetogether.session.ShareTogetherManager.session.collectAsState(initial = null)
+    val shareTogetherSession by ShareTogetherManager.session.collectAsState(initial = null)
     val isShareTogetherRoomActive = shareTogetherSession != null
 
     LaunchedEffect(Unit) {
@@ -504,14 +505,28 @@ fun FlowApp(
                                         if (needsOnboarding == false) SubscriptionBellAlerts(snackbarHostState)
                                         LinkedSyncAlerts(snackbarHostState)
                                         SwitchRefusals(profileSwitchViewModel)
-                                        PlayOnHost(onManageDevices = { mediaNavigator.openSettings(SettingsTarget(SettingsDestination.SYNC)) })
+                                        PlayOnHost(
+                                            onManageDevices = { mediaNavigator.openSettings(SettingsTarget(SettingsDestination.SYNC)) },
+                                        )
                                         NavHost(
                                             navController = navController,
                                             startDestination = if (needsOnboarding == true) "onboarding" else defaultStartRoute,
-                                            enterTransition = remember(pageTransitionStyle) { FlowNavTransitions.enter(pageTransitionStyle) },
-                                            exitTransition = remember(pageTransitionStyle) { FlowNavTransitions.exit(pageTransitionStyle) },
-                                            popEnterTransition = remember(pageTransitionStyle) { FlowNavTransitions.popEnter(pageTransitionStyle) },
-                                            popExitTransition = remember(pageTransitionStyle) { FlowNavTransitions.popExit(pageTransitionStyle) },
+                                            enterTransition =
+                                                remember(
+                                                    pageTransitionStyle,
+                                                ) { FlowNavTransitions.enter(pageTransitionStyle) },
+                                            exitTransition =
+                                                remember(
+                                                    pageTransitionStyle,
+                                                ) { FlowNavTransitions.exit(pageTransitionStyle) },
+                                            popEnterTransition =
+                                                remember(
+                                                    pageTransitionStyle,
+                                                ) { FlowNavTransitions.popEnter(pageTransitionStyle) },
+                                            popExitTransition =
+                                                remember(
+                                                    pageTransitionStyle,
+                                                ) { FlowNavTransitions.popExit(pageTransitionStyle) },
                                             predictivePopEnterTransition = FlowNavTransitions.predictivePopEnter,
                                             predictivePopExitTransition = FlowNavTransitions.predictivePopExit,
                                         ) {

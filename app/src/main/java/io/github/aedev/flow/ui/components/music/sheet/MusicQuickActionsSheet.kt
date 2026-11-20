@@ -33,12 +33,12 @@ import io.github.aedev.flow.R
 import io.github.aedev.flow.data.localmedia.LocalMediaIds
 import io.github.aedev.flow.data.music.model.MusicArtist
 import io.github.aedev.flow.data.music.model.MusicTrack
+import io.github.aedev.flow.ui.LocalOpenShareTogether
 import io.github.aedev.flow.ui.components.layout.navigation.LocalMediaNavigator
 import io.github.aedev.flow.ui.components.shared.ArtworkThumbnail
 import io.github.aedev.flow.ui.components.shared.ChannelAvatarStack
 import io.github.aedev.flow.ui.components.shared.FlowNavRow
 import io.github.aedev.flow.ui.components.shared.quickactions.MediaDetailsPage
-import io.github.aedev.flow.ui.LocalOpenShareTogether
 import io.github.aedev.flow.ui.components.shared.quickactions.MediaDetailsSubject
 import io.github.aedev.flow.ui.components.shared.quickactions.QuickActionRow
 import io.github.aedev.flow.ui.components.shared.quickactions.QuickActionsDefaults

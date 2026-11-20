@@ -154,13 +154,16 @@ object ShareTogetherSyncEngine {
                     EnhancedMusicPlayerManager.seekTo(expectedPosition)
                     EnhancedMusicPlayerManager.setPlaybackSpeed(1.0f)
                 }
+
                 // Moderate drift: Smooth speed adjustment
                 drift > 150L -> {
                     EnhancedMusicPlayerManager.setPlaybackSpeed(1.03f)
                 }
+
                 drift < -150L -> {
                     EnhancedMusicPlayerManager.setPlaybackSpeed(0.97f)
                 }
+
                 // In sync: Standard speed
                 else -> {
                     if (EnhancedMusicPlayerManager.playbackSpeed.value != 1.0f) {

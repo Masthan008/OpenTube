@@ -5087,10 +5087,11 @@ class PlayerPreferences(
     }
 
     val lyricsAnimationStyle: Flow<LyricsAnimationStyle> =
-        context.playerPreferencesDataStore.data.map { preferences ->
-            runCatching { LyricsAnimationStyle.valueOf(preferences[Keys.LYRICS_ANIMATION_STYLE] ?: LyricsAnimationStyle.FLUID.name) }
-                .getOrDefault(LyricsAnimationStyle.FLUID)
-        }.distinctUntilChanged()
+        context.playerPreferencesDataStore.data
+            .map { preferences ->
+                runCatching { LyricsAnimationStyle.valueOf(preferences[Keys.LYRICS_ANIMATION_STYLE] ?: LyricsAnimationStyle.FLUID.name) }
+                    .getOrDefault(LyricsAnimationStyle.FLUID)
+            }.distinctUntilChanged()
 
     suspend fun setLyricsAnimationStyle(style: LyricsAnimationStyle) {
         context.playerPreferencesDataStore.edit { it[Keys.LYRICS_ANIMATION_STYLE] = style.name }

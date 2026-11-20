@@ -30,9 +30,7 @@ import kotlin.random.Random
  * Floating canvas reactions overlay that animates bursts of emojis rising across the player.
  */
 @Composable
-fun ShareTogetherReactionOverlay(
-    modifier: Modifier = Modifier,
-) {
+fun ShareTogetherReactionOverlay(modifier: Modifier = Modifier) {
     val reactions by ShareTogetherManager.recentReactions.collectAsStateWithLifecycle()
 
     if (reactions.isEmpty()) return
@@ -82,7 +80,6 @@ private fun FloatingEmojiParticle(
                     val scale = 0.8f + 0.4f * sin(p * Math.PI.toFloat())
                     scaleX = scale
                     scaleY = scale
-                }
-                .alpha(alpha.coerceIn(0f, 1f)),
+                }.alpha(alpha.coerceIn(0f, 1f)),
     )
 }

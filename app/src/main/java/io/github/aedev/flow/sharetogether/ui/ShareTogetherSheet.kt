@@ -29,13 +29,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Hearing
 import androidx.compose.material.icons.filled.HearingDisabled
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -96,6 +96,7 @@ fun ShareTogetherSheet(
     val isMicMuted by ShareTogetherManager.isMicMuted.collectAsStateWithLifecycle()
     val isDeafened by ShareTogetherManager.isDeafened.collectAsStateWithLifecycle()
     val isConnecting by ShareTogetherManager.isConnecting.collectAsStateWithLifecycle()
+    val connectedRelays by ShareTogetherManager.connectedRelaysCount.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -143,15 +144,17 @@ fun ShareTogetherSheet(
                 // Active Room Session
                 ActiveRoomHeader(
                     session = currentSession,
+                    connectedRelays = connectedRelays,
                     onCopyCode = {
                         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val copyText = if (currentSession.hostAddress.isNotBlank()) {
-                            "${currentSession.roomCode}@${currentSession.hostAddress}"
-                        } else {
-                            currentSession.roomCode
-                        }
+                        val copyText = currentSession.roomCode
                         clipboard.setPrimaryClip(ClipData.newPlainText("Share Together Code", copyText))
-                        Toast.makeText(context, "${context.getString(R.string.share_together_copied)}: $copyText", Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(
+                                context,
+                                "${context.getString(R.string.share_together_copied)}: $copyText",
+                                Toast.LENGTH_SHORT,
+                            ).show()
                     },
                     onLeave = {
                         ShareTogetherManager.leaveRoom()
@@ -195,6 +198,7 @@ fun ShareTogetherSheet(
                             },
                         )
                     }
+
                     1 -> {
                         RoomChatTab(
                             messages = messages,
@@ -274,7 +278,11 @@ private fun UnjoinedRoomContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(Modifier.weight(1f).height(1.dp).background(colorScheme.outlineVariant))
-            Text("  OR  ", style = MaterialTheme.typography.labelSmall, color = colorScheme.onSurfaceVariant)
+            Text(
+                text = "  ${stringResource(R.string.share_together_or_separator)}  ",
+                style = MaterialTheme.typography.labelSmall,
+                color = colorScheme.onSurfaceVariant,
+            )
             Spacer(Modifier.weight(1f).height(1.dp).background(colorScheme.outlineVariant))
         }
 
@@ -326,7 +334,7 @@ private fun UnjoinedRoomContent(
                 )
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    text = "Connecting to room on Wi-Fi / Hotspot...",
+                    text = stringResource(R.string.share_together_connecting_relays),
                     style = MaterialTheme.typography.bodySmall,
                     color = colorScheme.primary,
                 )
@@ -338,6 +346,7 @@ private fun UnjoinedRoomContent(
 @Composable
 private fun ActiveRoomHeader(
     session: ShareTogetherSession,
+    connectedRelays: Int,
     onCopyCode: () -> Unit,
     onLeave: () -> Unit,
 ) {
@@ -371,13 +380,11 @@ private fun ActiveRoomHeader(
                     modifier = Modifier.size(16.dp),
                 )
             }
-            if (session.hostAddress.isNotBlank()) {
-                Text(
-                    text = "LAN / Wi-Fi: ${session.hostAddress}",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = colorScheme.onSurfaceVariant,
-                )
-            }
+            Text(
+                text = stringResource(R.string.share_together_live_relays, connectedRelays),
+                style = MaterialTheme.typography.labelSmall,
+                color = colorScheme.onSurfaceVariant,
+            )
         }
 
         IconButton(onClick = onLeave) {
@@ -423,7 +430,14 @@ private fun RoomMembersTab(
                         )
                     }
                     Text(
-                        text = if (isMicMuted) stringResource(R.string.share_together_mic_unmute) else stringResource(R.string.share_together_mic_mute),
+                        text =
+                            if (isMicMuted) {
+                                stringResource(
+                                    R.string.share_together_mic_unmute,
+                                )
+                            } else {
+                                stringResource(R.string.share_together_mic_mute)
+                            },
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
@@ -437,7 +451,14 @@ private fun RoomMembersTab(
                         )
                     }
                     Text(
-                        text = if (isDeafened) stringResource(R.string.share_together_undeafen) else stringResource(R.string.share_together_deafen),
+                        text =
+                            if (isDeafened) {
+                                stringResource(
+                                    R.string.share_together_undeafen,
+                                )
+                            } else {
+                                stringResource(R.string.share_together_deafen)
+                            },
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
@@ -513,7 +534,14 @@ private fun MemberRow(member: RoomMember) {
                     }
                 }
                 Text(
-                    text = if (member.isSpeaking) "Speaking..." else if (member.isMuted) "Muted" else "Listening",
+                    text =
+                        if (member.isSpeaking) {
+                            "Speaking..."
+                        } else if (member.isMuted) {
+                            "Muted"
+                        } else {
+                            "Listening"
+                        },
                     style = MaterialTheme.typography.labelSmall,
                     color = if (member.isSpeaking) Color(0xFF10B981) else colorScheme.onSurfaceVariant,
                 )
