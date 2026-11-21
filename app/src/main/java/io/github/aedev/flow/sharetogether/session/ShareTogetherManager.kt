@@ -81,6 +81,7 @@ object ShareTogetherManager {
     private var eventConsumerJob: Job? = null
     private var hostBroadcastJob: Job? = null
     private var joinKnockJob: Job? = null
+    private var heartbeatJob: Job? = null
 
     val isRoomActive: Boolean
         get() = _session.value != null
@@ -262,11 +263,19 @@ object ShareTogetherManager {
                     try {
                         val frame = json.decodeFromString(ShareTogetherFrame.serializer(), decryptedJson)
                         handleIncomingParticipantFrame(frame)
-                        if (!isRoomAcknowledged && (frame is ShareTogetherFrame.RoomState || frame is ShareTogetherFrame.MemberJoined)) {
-                            isRoomAcknowledged = true
-                            withContext(Dispatchers.Main) {
-                                _isConnecting.value = false
-                                onResult(true)
+                        if (!isRoomAcknowledged) {
+                            val acknowledged =
+                                when (frame) {
+                                    is ShareTogetherFrame.RoomState -> frame.members.any { it.id == myMemberId }
+                                    is ShareTogetherFrame.MemberJoined -> frame.member.id == myMemberId
+                                    else -> false
+                                }
+                            if (acknowledged) {
+                                isRoomAcknowledged = true
+                                withContext(Dispatchers.Main) {
+                                    _isConnecting.value = false
+                                    onResult(true)
+                                }
                             }
                         }
                     } catch (_: Exception) {
@@ -274,27 +283,48 @@ object ShareTogetherManager {
                 }
             }
 
-        // Send knock / join frame repeatedly until acknowledged or timeout (12s)
+        // Send knock / join frame repeatedly until acknowledged or timeout (15s)
         joinKnockJob =
             scope.launch(Dispatchers.IO) {
                 val joinFrame = ShareTogetherFrame.Join(member = myMember, roomCode = cleanCode)
                 var attempts = 0
-                while (isActive && !isRoomAcknowledged && attempts < 6) {
+                while (isActive && !isRoomAcknowledged && attempts < 10) {
                     publishFrame(joinFrame)
-                    delay(2000)
+                    delay(1500)
                     attempts++
                 }
                 if (!isRoomAcknowledged) {
-                    withContext(Dispatchers.Main) {
-                        _isConnecting.value = false
-                        _chatMessages.value +=
-                            RoomChatMessage(
-                                senderId = "system",
-                                senderName = "OpenTube",
-                                text = "Could not find host for room $cleanCode. Make sure the code is correct and the host is active.",
-                                isSystem = true,
-                            )
-                        onResult(false)
+                    // Fallback: If room state was received from host, complete join
+                    if (_session.value?.hostId?.isNotBlank() == true) {
+                        isRoomAcknowledged = true
+                        withContext(Dispatchers.Main) {
+                            _isConnecting.value = false
+                            onResult(true)
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            _isConnecting.value = false
+                            _chatMessages.value +=
+                                RoomChatMessage(
+                                    senderId = "system",
+                                    senderName = "OpenTube",
+                                    text = "Could not find host for room $cleanCode. Make sure the code is correct and the host is active.",
+                                    isSystem = true,
+                                )
+                            onResult(false)
+                        }
+                    }
+                }
+            }
+
+        // Periodic participant heartbeat to maintain live presence
+        heartbeatJob =
+            scope.launch(Dispatchers.IO) {
+                while (isActive) {
+                    delay(8000)
+                    val cur = _session.value ?: break
+                    if (cur.role == RoomRole.PARTICIPANT) {
+                        publishFrame(ShareTogetherFrame.Heartbeat(myMember))
                     }
                 }
             }
@@ -310,21 +340,8 @@ object ShareTogetherManager {
                 is ShareTogetherFrame.Join -> {
                     val newMember = frame.member
                     if (_members.value.none { it.id == newMember.id }) {
-                        val updated = _members.value + newMember
-                        _members.value = updated
+                        _members.value = _members.value + newMember
 
-                        // Send complete room state back
-                        val roomState =
-                            ShareTogetherFrame.RoomState(
-                                roomCode = currentSession.roomCode,
-                                hostId = currentSession.myMemberId,
-                                members = updated,
-                                controlMode = currentSession.controlMode,
-                                mediaState = _remoteMediaState.value,
-                            )
-                        publishFrame(roomState)
-
-                        // Announce member joined
                         val sysMsg =
                             RoomChatMessage(
                                 senderId = "system",
@@ -335,17 +352,62 @@ object ShareTogetherManager {
                         _chatMessages.value += sysMsg
                         publishFrame(ShareTogetherFrame.Chat(sysMsg))
                     }
+
+                    // Always send complete room state back so guest is fully acknowledged
+                    val roomState =
+                        ShareTogetherFrame.RoomState(
+                            roomCode = currentSession.roomCode,
+                            hostId = currentSession.myMemberId,
+                            members = _members.value,
+                            controlMode = currentSession.controlMode,
+                            mediaState = _remoteMediaState.value,
+                        )
+                    publishFrame(roomState)
+                }
+
+                is ShareTogetherFrame.Heartbeat -> {
+                    val member = frame.member
+                    if (_members.value.none { it.id == member.id }) {
+                        _members.value = _members.value + member
+                        val roomState =
+                            ShareTogetherFrame.RoomState(
+                                roomCode = currentSession.roomCode,
+                                hostId = currentSession.myMemberId,
+                                members = _members.value,
+                                controlMode = currentSession.controlMode,
+                                mediaState = _remoteMediaState.value,
+                            )
+                        publishFrame(roomState)
+                    }
                 }
 
                 is ShareTogetherFrame.Chat -> {
                     if (_chatMessages.value.none { it.id == frame.message.id }) {
                         _chatMessages.value += frame.message
                     }
+                    val senderId = frame.message.senderId
+                    if (senderId != "system" && senderId != "reaction" && _members.value.none { it.id == senderId }) {
+                        _members.value =
+                            _members.value +
+                            RoomMember(
+                                id = senderId,
+                                name = frame.message.senderName,
+                                avatarId = frame.message.senderAvatarId,
+                            )
+                    }
                 }
 
                 is ShareTogetherFrame.Reaction -> {
                     if (_recentReactions.value.none { it.id == frame.reaction.id }) {
                         _recentReactions.value += frame.reaction
+                        val reactionMsg =
+                            RoomChatMessage(
+                                senderId = "reaction",
+                                senderName = frame.reaction.senderName,
+                                text = "${frame.reaction.senderName} reacted ${frame.reaction.emoji}",
+                                isSystem = true,
+                            )
+                        _chatMessages.value += reactionMsg
                         scope.launch {
                             delay(3500)
                             _recentReactions.value = _recentReactions.value.filter { it.id != frame.reaction.id }
@@ -399,7 +461,24 @@ object ShareTogetherManager {
                             hostId = frame.hostId,
                             controlMode = frame.controlMode,
                         )
-                    _members.value = frame.members
+                    val cur = _session.value
+                    val myId = cur?.myMemberId ?: ""
+                    val myName = cur?.myName ?: ""
+                    val myAvatar = cur?.myAvatarId ?: 0
+                    val safeMembers =
+                        if (frame.members.any { it.id == myId }) {
+                            frame.members
+                        } else {
+                            frame.members +
+                                RoomMember(
+                                    id = myId,
+                                    name = myName,
+                                    avatarId = myAvatar,
+                                    isHost = false,
+                                    isMuted = _isMicMuted.value,
+                                )
+                        }
+                    _members.value = safeMembers
                     if (frame.mediaState != null) {
                         _remoteMediaState.value = frame.mediaState
                     }
@@ -416,6 +495,15 @@ object ShareTogetherManager {
                     _members.value = _members.value.filter { it.id != frame.memberId }
                 }
 
+                is ShareTogetherFrame.Kick -> {
+                    val myId = _session.value?.myMemberId
+                    if (frame.targetMemberId == myId) {
+                        leaveRoom()
+                    } else {
+                        _members.value = _members.value.filter { it.id != frame.targetMemberId }
+                    }
+                }
+
                 is ShareTogetherFrame.Chat -> {
                     if (_chatMessages.value.none { it.id == frame.message.id }) {
                         _chatMessages.value += frame.message
@@ -425,6 +513,14 @@ object ShareTogetherManager {
                 is ShareTogetherFrame.Reaction -> {
                     if (_recentReactions.value.none { it.id == frame.reaction.id }) {
                         _recentReactions.value += frame.reaction
+                        val reactionMsg =
+                            RoomChatMessage(
+                                senderId = "reaction",
+                                senderName = frame.reaction.senderName,
+                                text = "${frame.reaction.senderName} reacted ${frame.reaction.emoji}",
+                                isSystem = true,
+                            )
+                        _chatMessages.value += reactionMsg
                         scope.launch {
                             delay(3500)
                             _recentReactions.value = _recentReactions.value.filter { it.id != frame.reaction.id }
@@ -483,6 +579,8 @@ object ShareTogetherManager {
         hostBroadcastJob = null
         joinKnockJob?.cancel()
         joinKnockJob = null
+        heartbeatJob?.cancel()
+        heartbeatJob = null
 
         relayPool?.close()
         relayPool = null
@@ -529,10 +627,50 @@ object ShareTogetherManager {
         _recentReactions.value += reaction
         publishFrame(ShareTogetherFrame.Reaction(reaction))
 
+        val reactionMsg =
+            RoomChatMessage(
+                senderId = "reaction",
+                senderName = currentSession.myName,
+                text = "${currentSession.myName} reacted $emoji",
+                isSystem = true,
+            )
+        _chatMessages.value += reactionMsg
+
         scope.launch {
             delay(3500)
             _recentReactions.value = _recentReactions.value.filter { it.id != reaction.id }
         }
+    }
+
+    /**
+     * Kick a member from the room (Host only).
+     */
+    fun kickMember(targetMemberId: String) {
+        val currentSession = _session.value ?: return
+        if (currentSession.role != RoomRole.HOST) return
+        val target = _members.value.find { it.id == targetMemberId } ?: return
+        _members.value = _members.value.filter { it.id != targetMemberId }
+
+        val sysMsg =
+            RoomChatMessage(
+                senderId = "system",
+                senderName = "OpenTube",
+                text = "${target.name} was removed by host",
+                isSystem = true,
+            )
+        _chatMessages.value += sysMsg
+        publishFrame(ShareTogetherFrame.Kick(targetMemberId))
+        publishFrame(ShareTogetherFrame.Chat(sysMsg))
+
+        val roomState =
+            ShareTogetherFrame.RoomState(
+                roomCode = currentSession.roomCode,
+                hostId = currentSession.myMemberId,
+                members = _members.value,
+                controlMode = currentSession.controlMode,
+                mediaState = _remoteMediaState.value,
+            )
+        publishFrame(roomState)
     }
 
     /**

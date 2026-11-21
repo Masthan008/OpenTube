@@ -135,8 +135,22 @@ sealed class ShareTogetherFrame {
     ) : ShareTogetherFrame()
 
     @Serializable
+    @SerialName("heartbeat")
+    data class Heartbeat(
+        val member: RoomMember,
+    ) : ShareTogetherFrame()
+
+    @Serializable
+    @SerialName("kick")
+    data class Kick(
+        val targetMemberId: String,
+        val reason: String = "Removed by host",
+    ) : ShareTogetherFrame()
+
+    @Serializable
     @SerialName("leave")
     data class Leave(
         val memberId: String,
+        val kicked: Boolean = false,
     ) : ShareTogetherFrame()
 }

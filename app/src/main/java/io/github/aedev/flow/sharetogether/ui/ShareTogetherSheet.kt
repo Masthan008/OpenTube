@@ -21,21 +21,25 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.CallEnd
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Hearing
 import androidx.compose.material.icons.filled.HearingDisabled
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -53,6 +57,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -72,6 +77,8 @@ import io.github.aedev.flow.R
 import io.github.aedev.flow.sharetogether.model.RoomChatMessage
 import io.github.aedev.flow.sharetogether.model.RoomControlMode
 import io.github.aedev.flow.sharetogether.model.RoomMember
+import io.github.aedev.flow.sharetogether.model.RoomRole
+import io.github.aedev.flow.sharetogether.player.ShareTogetherSyncEngine
 import io.github.aedev.flow.sharetogether.session.ShareTogetherManager
 import io.github.aedev.flow.sharetogether.session.ShareTogetherSession
 
@@ -107,116 +114,128 @@ fun ShareTogetherSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
     ) {
-        Column(
+        Box(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                    .imePadding(),
         ) {
-            val currentSession = session
-            if (currentSession == null) {
-                // Not in room: Create or Join
-                UnjoinedRoomContent(
-                    hasProfileName = hasProfileName,
-                    userName = userName,
-                    avatarId = avatarId,
-                    isConnecting = isConnecting,
-                    joinCodeInput = joinCodeInput,
-                    onJoinCodeChange = { joinCodeInput = it },
-                    onRequireProfile = onRequireProfile,
-                    onCreateRoom = {
-                        ShareTogetherManager.createRoom(
-                            context = context,
-                            hostName = userName,
-                            avatarId = avatarId,
-                        )
-                    },
-                    onJoinRoom = { code ->
-                        ShareTogetherManager.joinRoom(
-                            context = context,
-                            roomCodeOrAddress = code,
-                            memberName = userName,
-                            avatarId = avatarId,
-                        )
-                    },
-                )
-            } else {
-                // Active Room Session
-                ActiveRoomHeader(
-                    session = currentSession,
-                    connectedRelays = connectedRelays,
-                    onCopyCode = {
-                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val copyText = currentSession.roomCode
-                        clipboard.setPrimaryClip(ClipData.newPlainText("Share Together Code", copyText))
-                        Toast
-                            .makeText(
-                                context,
-                                "${context.getString(R.string.share_together_copied)}: $copyText",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                    },
-                    onLeave = {
-                        ShareTogetherManager.leaveRoom()
-                    },
-                )
-
-                Spacer(Modifier.height(12.dp))
-
-                PrimaryTabRow(selectedTabIndex = selectedTab) {
-                    Tab(
-                        selected = selectedTab == 0,
-                        onClick = { selectedTab = 0 },
-                        text = { Text("${stringResource(R.string.share_together_members)} (${members.size})") },
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 8.dp),
+            ) {
+                val currentSession = session
+                if (currentSession == null) {
+                    // Not in room: Create or Join
+                    UnjoinedRoomContent(
+                        hasProfileName = hasProfileName,
+                        userName = userName,
+                        avatarId = avatarId,
+                        isConnecting = isConnecting,
+                        joinCodeInput = joinCodeInput,
+                        onJoinCodeChange = { joinCodeInput = it },
+                        onRequireProfile = onRequireProfile,
+                        onCreateRoom = {
+                            ShareTogetherManager.createRoom(
+                                context = context,
+                                hostName = userName,
+                                avatarId = avatarId,
+                            )
+                        },
+                        onJoinRoom = { code ->
+                            ShareTogetherManager.joinRoom(
+                                context = context,
+                                roomCodeOrAddress = code,
+                                memberName = userName,
+                                avatarId = avatarId,
+                            )
+                        },
                     )
-                    Tab(
-                        selected = selectedTab == 1,
-                        onClick = { selectedTab = 1 },
-                        text = { Text(stringResource(R.string.share_together_chat)) },
+                } else {
+                    // Active Room Session
+                    ActiveRoomHeader(
+                        session = currentSession,
+                        connectedRelays = connectedRelays,
+                        onCopyCode = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val copyText = currentSession.roomCode
+                            clipboard.setPrimaryClip(ClipData.newPlainText("Share Together Code", copyText))
+                            Toast
+                                .makeText(
+                                    context,
+                                    "${context.getString(R.string.share_together_copied)}: $copyText",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                        },
+                        onLeave = {
+                            ShareTogetherManager.leaveRoom()
+                        },
                     )
-                }
 
-                Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(12.dp))
 
-                when (selectedTab) {
-                    0 -> {
-                        RoomMembersTab(
-                            session = currentSession,
-                            members = members,
-                            isMicMuted = isMicMuted,
-                            isDeafened = isDeafened,
-                            onToggleMic = { ShareTogetherManager.toggleMicMute() },
-                            onToggleDeafen = { ShareTogetherManager.toggleDeafen() },
-                            onToggleControlMode = {
-                                val next =
-                                    if (currentSession.controlMode == RoomControlMode.PARTY) {
-                                        RoomControlMode.HOST_DJ
-                                    } else {
-                                        RoomControlMode.PARTY
-                                    }
-                                ShareTogetherManager.setControlMode(next)
-                            },
+                    PrimaryTabRow(selectedTabIndex = selectedTab) {
+                        Tab(
+                            selected = selectedTab == 0,
+                            onClick = { selectedTab = 0 },
+                            text = { Text("${stringResource(R.string.share_together_members)} (${members.size})") },
+                        )
+                        Tab(
+                            selected = selectedTab == 1,
+                            onClick = { selectedTab = 1 },
+                            text = { Text(stringResource(R.string.share_together_chat)) },
                         )
                     }
 
-                    1 -> {
-                        RoomChatTab(
-                            messages = messages,
-                            chatInput = chatInput,
-                            onChatInputChange = { chatInput = it },
-                            onSendChat = {
-                                ShareTogetherManager.sendChatMessage(chatInput)
-                                chatInput = ""
-                            },
-                            onSendReaction = { emoji ->
-                                ShareTogetherManager.sendEmojiReaction(emoji)
-                            },
-                        )
+                    Spacer(Modifier.height(12.dp))
+
+                    when (selectedTab) {
+                        0 -> {
+                            RoomMembersTab(
+                                session = currentSession,
+                                members = members,
+                                isMicMuted = isMicMuted,
+                                isDeafened = isDeafened,
+                                onToggleMic = { ShareTogetherManager.toggleMicMute() },
+                                onToggleDeafen = { ShareTogetherManager.toggleDeafen() },
+                                onToggleControlMode = {
+                                    val next =
+                                        if (currentSession.controlMode == RoomControlMode.PARTY) {
+                                            RoomControlMode.HOST_DJ
+                                        } else {
+                                            RoomControlMode.PARTY
+                                        }
+                                    ShareTogetherManager.setControlMode(next)
+                                },
+                                onKickMember = { memberId ->
+                                    ShareTogetherManager.kickMember(memberId)
+                                },
+                            )
+                        }
+
+                        1 -> {
+                            RoomChatTab(
+                                messages = messages,
+                                chatInput = chatInput,
+                                onChatInputChange = { chatInput = it },
+                                onSendChat = {
+                                    ShareTogetherManager.sendChatMessage(chatInput)
+                                    chatInput = ""
+                                },
+                                onSendReaction = { emoji ->
+                                    ShareTogetherManager.sendEmojiReaction(emoji)
+                                },
+                            )
+                        }
                     }
                 }
+
+                Spacer(Modifier.height(24.dp))
             }
 
-            Spacer(Modifier.height(24.dp))
+            ShareTogetherReactionOverlay()
         }
     }
 }
@@ -406,8 +425,10 @@ private fun RoomMembersTab(
     onToggleMic: () -> Unit,
     onToggleDeafen: () -> Unit,
     onToggleControlMode: () -> Unit,
+    onKickMember: (String) -> Unit,
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val remoteMedia by ShareTogetherManager.remoteMediaState.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // Voice Action Bar
@@ -465,22 +486,147 @@ private fun RoomMembersTab(
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
+
+        // Control Mode Card (Party Mode vs Host DJ Mode)
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = colorScheme.surfaceContainer,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.share_together_mode_label),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        text =
+                            if (session.controlMode == RoomControlMode.HOST_DJ) {
+                                stringResource(R.string.share_together_dj_mode)
+                            } else {
+                                stringResource(R.string.share_together_party_mode)
+                            },
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = colorScheme.primary,
+                    )
+                    Text(
+                        text =
+                            if (session.controlMode == RoomControlMode.HOST_DJ) {
+                                stringResource(R.string.share_together_host_dj_desc)
+                            } else {
+                                stringResource(R.string.share_together_party_desc)
+                            },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colorScheme.onSurfaceVariant,
+                    )
+                }
+
+                if (session.role == RoomRole.HOST) {
+                    FilledTonalButton(
+                        onClick = onToggleControlMode,
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(
+                            text =
+                                if (session.controlMode == RoomControlMode.HOST_DJ) {
+                                    stringResource(R.string.share_together_party_mode)
+                                } else {
+                                    stringResource(R.string.share_together_dj_mode)
+                                },
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                }
+            }
+        }
+
+        // Live Room Playback Bar & Sync Action
+        val currentMedia = remoteMedia
+        if (currentMedia != null && currentMedia.mediaId.isNotBlank()) {
+            Spacer(Modifier.height(4.dp))
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = colorScheme.surfaceContainerHigh,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.share_together_playing_now),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = colorScheme.primary,
+                        )
+                        Text(
+                            text = currentMedia.title,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                            color = colorScheme.onSurface,
+                            maxLines = 1,
+                        )
+                        if (currentMedia.subtitle.isNotBlank()) {
+                            Text(
+                                text = currentMedia.subtitle,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = colorScheme.onSurfaceVariant,
+                                maxLines = 1,
+                            )
+                        }
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    FilledTonalButton(
+                        onClick = { ShareTogetherSyncEngine.forceSync() },
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(R.string.share_together_sync_now),
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(6.dp))
 
         // Members List
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().height(260.dp),
+            modifier = Modifier.fillMaxWidth().height(220.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(members, key = { it.id }) { member ->
-                MemberRow(member = member)
+                MemberRow(
+                    member = member,
+                    isCurrentUserHost = session.role == RoomRole.HOST,
+                    currentUserId = session.myMemberId,
+                    onKick = { onKickMember(member.id) },
+                )
             }
         }
     }
 }
 
 @Composable
-private fun MemberRow(member: RoomMember) {
+private fun MemberRow(
+    member: RoomMember,
+    isCurrentUserHost: Boolean,
+    currentUserId: String,
+    onKick: () -> Unit,
+) {
     val colorScheme = MaterialTheme.colorScheme
     val avatarColor = ShareTogetherAvatarColors.getOrElse(member.avatarId) { ShareTogetherAvatarColors[0] }
 
@@ -553,6 +699,18 @@ private fun MemberRow(member: RoomMember) {
                 tint = if (member.isMuted) colorScheme.outline else colorScheme.primary,
                 modifier = Modifier.size(18.dp),
             )
+
+            if (isCurrentUserHost && member.id != currentUserId && !member.isHost) {
+                Spacer(Modifier.width(4.dp))
+                IconButton(onClick = onKick) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.share_together_kick_member),
+                        tint = colorScheme.error,
+                        modifier = Modifier.size(18.dp),
+                    )
+                }
+            }
         }
     }
 }
@@ -566,6 +724,13 @@ private fun RoomChatTab(
     onSendReaction: (String) -> Unit,
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // Quick reaction bar
@@ -592,7 +757,8 @@ private fun RoomChatTab(
 
         // Chat message history
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().height(200.dp),
+            state = listState,
+            modifier = Modifier.fillMaxWidth().height(220.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             items(messages, key = { it.id }) { msg ->
@@ -604,7 +770,7 @@ private fun RoomChatTab(
 
         // Message input
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {

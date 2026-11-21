@@ -129,12 +129,49 @@ object ShareTogetherSyncEngine {
         duckingJob = null
     }
 
+    /**
+     * Force synchronization with the room's current media state.
+     */
+    fun forceSync() {
+        val remote = ShareTogetherManager.remoteMediaState.value ?: return
+        applyRemoteMedia(remote)
+    }
+
     private fun applyRemoteMedia(remote: SyncMediaState) {
+        if (remote.mediaId.isBlank()) return
+
+        val elapsedTime = (System.currentTimeMillis() - remote.timestamp).coerceAtLeast(0L)
+        val expectedPosition = remote.positionMs + if (remote.isPlaying) elapsedTime else 0L
+
         if (remote.isMusic) {
             val localTrack = EnhancedMusicPlayerManager.currentTrack.value
+
+            // 1. If song changed or not loaded, load and play the track!
+            if (localTrack?.videoId != remote.mediaId) {
+                val newTrack =
+                    io.github.aedev.flow.data.music.model.MusicTrack(
+                        videoId = remote.mediaId,
+                        title = remote.title,
+                        artist = remote.subtitle,
+                        thumbnailUrl = remote.thumbnailUrl,
+                        duration = (remote.durationMs / 1000).toInt(),
+                    )
+                EnhancedMusicPlayerManager.playTrack(
+                    track = newTrack,
+                    audioUrl = "music://${remote.mediaId}",
+                    queue = listOf(newTrack),
+                    startPositionMs = expectedPosition,
+                    sourceName = "Share Together",
+                )
+                scope.launch(Dispatchers.IO) {
+                    EnhancedMusicPlayerManager.resolveStreamUrl(remote.mediaId)
+                }
+                return
+            }
+
             val localState = EnhancedMusicPlayerManager.playerState.value
 
-            // Sync Play/Pause
+            // 2. Sync Play/Pause
             if (localState.isPlaying != remote.isPlaying) {
                 if (remote.isPlaying) {
                     EnhancedMusicPlayerManager.play()
@@ -143,11 +180,8 @@ object ShareTogetherSyncEngine {
                 }
             }
 
-            // Sync Position with micro-speed drift correction
-            val elapsedTime = (System.currentTimeMillis() - remote.timestamp).coerceAtLeast(0L)
-            val expectedPosition = remote.positionMs + if (remote.isPlaying) elapsedTime else 0L
+            // 3. Sync Position with micro-speed drift correction
             val drift = expectedPosition - localState.position
-
             when {
                 // Large drift: Hard seek
                 abs(drift) > 1500L -> {
@@ -173,6 +207,25 @@ object ShareTogetherSyncEngine {
             }
         } else {
             // Video sync
+            val localVideo = GlobalPlayerState.currentVideo.value
+
+            // 1. If video changed or not loaded, load and play the video!
+            if (localVideo?.id != remote.mediaId) {
+                val newVideo =
+                    io.github.aedev.flow.data.model.Video(
+                        id = remote.mediaId,
+                        title = remote.title,
+                        channelName = remote.subtitle,
+                        channelId = "",
+                        thumbnailUrl = remote.thumbnailUrl,
+                        duration = (remote.durationMs / 1000).toInt(),
+                        viewCount = 0L,
+                        uploadDate = "",
+                    )
+                EnhancedPlayerManager.getInstance().playVideoDirectly(newVideo, startPositionMs = expectedPosition)
+                return
+            }
+
             val isVideoPlaying = GlobalPlayerState.playerState.value.isPlaying
             val videoPos = EnhancedPlayerManager.getInstance().getCurrentPosition()
 
@@ -184,8 +237,6 @@ object ShareTogetherSyncEngine {
                 }
             }
 
-            val elapsedTime = (System.currentTimeMillis() - remote.timestamp).coerceAtLeast(0L)
-            val expectedPosition = remote.positionMs + if (remote.isPlaying) elapsedTime else 0L
             val drift = expectedPosition - videoPos
             if (abs(drift) > 1500L) {
                 EnhancedPlayerManager.getInstance().seekTo(expectedPosition)

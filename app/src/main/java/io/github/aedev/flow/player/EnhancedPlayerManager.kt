@@ -1609,6 +1609,27 @@ class EnhancedPlayerManager private constructor() {
         }
     }
 
+    /**
+     * Start playing a video directly (used for remote co-watching sync in Share Together).
+     */
+    fun playVideoDirectly(
+        video: Video,
+        startPositionMs: Long = 0L,
+    ) {
+        if (!isOnMainThread()) {
+            mainHandler.post { playVideoDirectly(video, startPositionMs) }
+            return
+        }
+        val startVideo = queue.setQueue(listOf(video), 0, title = null, shuffle = false)
+        updateQueueState()
+        if (startVideo != null) {
+            startPlaybackFromQueue(startVideo, loadStreamsInPlayer = true)
+            if (startPositionMs > 0L) {
+                seekTo(startPositionMs)
+            }
+        }
+    }
+
     fun playNext(loadStreamsInPlayer: Boolean = true): Boolean {
         val nextIndex =
             queue.nextIndex() ?: run {

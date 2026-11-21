@@ -4552,6 +4552,12 @@
     <string name="share_together_end_room">End Room</string>
     <string name="share_together_dj_mode">Host DJ Mode</string>
     <string name="share_together_party_mode">Party Mode</string>
+    <string name="share_together_mode_label">Room Control</string>
+    <string name="share_together_host_dj_desc">Host controls all playback</string>
+    <string name="share_together_party_desc">All members can play &amp; skip</string>
+    <string name="share_together_kick_member">Remove from room</string>
+    <string name="share_together_sync_now">Sync Playback</string>
+    <string name="share_together_playing_now">Now Playing in Room</string>
     <string name="share_together_profile_title">Choose Your Name</string>
     <string name="share_together_profile_subtitle">This is how friends in the room will see you</string>
     <string name="share_together_profile_name_hint">Enter your name</string>
